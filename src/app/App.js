@@ -1,5 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
+import Bucket from './Bucket';
+import Target from './Target';
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -9,7 +11,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {'App'}
+        <Bucket id="left" />
+        <Bucket id="right" />
+        <Target />
       </div>
     );
   }
