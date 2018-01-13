@@ -189,6 +189,7 @@
       ],
       "no-trailing-spaces": 0,
       "eol-last": 0,
+      "import/no-unresolved": 0,
       "no-underscore-dangle": 0,
       "no-alert": 0,
       "no-lone-blocks": 0,

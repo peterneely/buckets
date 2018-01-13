@@ -6,7 +6,7 @@ export default {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
     alias: {
-      _app: 'src/app',
+      _app: path.resolve(__dirname, 'src/app/'),
     }
   },
   devtool: 'cheap-module-eval-source-map', // more info:https://webpack.js.org/guides/development/#using-source-maps and https://webpack.js.org/configuration/devtool/

@@ -15,7 +15,7 @@ export default {
   resolve: {
     extensions: ['*', '.js', '.jsx', '.json'],
     alias: {
-      _app: 'src/app',
+      _app: path.resolve(__dirname, 'src/app/'),
     }
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/
