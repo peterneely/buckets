@@ -1,26 +1,50 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import Button from 'material-ui/FloatingActionButton';
+import Redo from 'material-ui/svg-icons/content/redo';
 import Bucket from './Bucket';
 import Target from './Target';
+import * as appActions from './actions';
 
-// This is a class-based component because the current
-// version of hot reloading won't hot reload a stateless
-// component at the top-level.
+class App extends Component {
+  app = (() => {
+    const { actions } = this.props;
+    return {
+      render: () => {
+        const { app: { target } } = this.props;
+        return (
+          <div>
+            <Bucket id="left" />
+            <Bucket id="right" />
+            <Target actions={actions} value={target} />
+            <Button>
+              <Redo />
+            </Button>
+          </div>
+        );
+      },
+    };
+  })();
 
-class App extends React.Component {
   render() {
-    return (
-      <div>
-        <Bucket id="left" />
-        <Bucket id="right" />
-        <Target />
-      </div>
-    );
+    return this.app.render();
   }
 }
 
-// App.propTypes = {
+App.propTypes = {
+  actions: PropTypes.object.isRequired,
+  app: PropTypes.object.isRequired,
+};
 
-// };
+function mapStateToProps(state) {
+  const { app } = state;
+  return { app };
+}
 
-export default App;
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators(appActions, dispatch) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -4,7 +4,7 @@ import TextField from 'material-ui/TextField';
 
 class Bucket extends Component {
   render() {
-    const { id } = this.props;
+    // const { id } = this.props;
     return (
       <div>
         <TextField
