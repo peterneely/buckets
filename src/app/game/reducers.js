@@ -6,9 +6,9 @@ export default function reduce(state = initialState, action) {
   switch (type) {
     case types.RESET_GAME:
       return { ...initialState };
-    case types.SET_BUCKET_VALUE:
-      return { ...state, [payload.id]: { ...state[payload.id], value: payload.value } };
-    case types.SET_TARGET:
+    case types.SET_BUCKET_SIZE:
+      return { ...state, [payload.bucketId]: { ...state[payload.bucketId], size: payload.size } };
+    case types.SET_TARGET_SIZE:
       return { ...state, target: payload };
     default:
       return state;

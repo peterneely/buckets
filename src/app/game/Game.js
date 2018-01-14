@@ -2,23 +2,49 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import _ from 'lodash';
+import * as gameActions from './actions';
 import Bucket from './Bucket';
 import Reset from './Reset';
 import Target from './Target';
-import * as gameActions from './actions';
+import initialState from './initialState';
 
 class Game extends Component {
   game = (() => {
     const { actions } = this.props;
+    const containerStyle = { display: 'flex', justifyContent: 'center', width: '100%' };
+    const elementContainerStyle = { margin: 30 };
     return {
       render: () => {
-        const { game: { left, right, target } } = this.props;
+        const { game } = this.props;
+        const { left, right, target } = game;
+        const canReset = !_.isEqual(game, initialState);
         return (
-          <div>
-            <Bucket actions={actions} id="left" size={left.size} value={left.value} />
-            <Bucket actions={actions} id="right" size={right.size} value={right.value} />
-            <Target actions={actions} value={target} />
-            <Reset actions={actions} />
+          <div style={containerStyle}>
+            <Bucket
+              actions={actions}
+              id="left"
+              size={left.size}
+              style={elementContainerStyle}
+              value={left.value}
+            />
+            <Bucket
+              actions={actions}
+              id="right"
+              size={right.size}
+              style={elementContainerStyle}
+              value={right.value}
+            />
+            <Target
+              actions={actions}
+              style={elementContainerStyle}
+              value={target}
+            />
+            <Reset
+              actions={actions}
+              disabled={!canReset}
+              style={elementContainerStyle}
+            />
           </div>
         );
       },

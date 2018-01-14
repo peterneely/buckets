@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import { toInt } from '_layout/format';
 
 class Bucket extends Component {
   bucket = (() => {
-    const { actions: { setBucketValue }, id } = this.props;
-    const handleSetValue = event => setBucketValue(id, toInt(event.target.value));
+    const { actions: { setBucketSize }, id, style = {} } = this.props;
+    const handleSetValue = (event, newValue) => setBucketSize(id, newValue);
     return {
       render: () => {
-        const { value } = this.props;
+        const { size } = this.props;
         return (
-          <div>
+          <div style={style}>
             <TextField
               floatingLabelText="Size"
               onChange={handleSetValue}
               type="number"
-              value={value}
+              value={size}
             />
           </div>
         );
@@ -33,6 +32,7 @@ Bucket.propTypes = {
   actions: PropTypes.object.isRequired,
   id: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
+  style: PropTypes.object,
   value: PropTypes.number.isRequired,
 };
 

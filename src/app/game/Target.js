@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
-import { toInt } from '_layout/format';
 
 class Target extends Component {
   target = (() => {
-    const { actions: { setTarget } } = this.props;
-    const handleChange = event => setTarget(toInt(event.target.value));
+    const { actions: { setTargetSize }, style = {} } = this.props;
+    const handleChange = (event, newValue) => setTargetSize(newValue);
     return {
       render: () => {
         const { value } = this.props;
         return (
-          <div>
+          <div style={style}>
             <TextField
               floatingLabelText="Size"
               onChange={handleChange}
@@ -31,6 +30,7 @@ class Target extends Component {
 
 Target.propTypes = {
   actions: PropTypes.object.isRequired,
+  style: PropTypes.object,
   value: PropTypes.number.isRequired,
 };
 
