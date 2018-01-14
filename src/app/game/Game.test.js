@@ -1,12 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import mockStore from 'redux-mock-store';
-import Button from 'material-ui/FloatingActionButton';
-import Game from './Game';
 import Bucket from './Bucket';
+import Game from './Game';
+import Reset from './Reset';
 import Target from './Target';
 import initialState from '_store/initialState';
-import * as types from './types';
 
 describe('Game', () => {
   let game;
@@ -33,13 +32,7 @@ describe('Game', () => {
   });
 
   it('Should have a reset button', () => {
-    const button = game.find(Button);
+    const button = game.find(Reset);
     expect(button.length).toEqual(1);
-  });
-
-  it('Should reset the game state when the reset button is pressed', () => {
-    game.find(Button).simulate('click');
-    const action = store.getActions()[0];
-    expect(action.type).toEqual(types.RESET_GAME);
   });
 });
