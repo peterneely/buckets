@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import { toInt } from '_layout/format';
 
 class Target extends Component {
   target = (() => {
     const { actions: { setTarget } } = this.props;
-    const handleChange = event => setTarget(parseInt(event.target.value, 10));
+    const handleChange = event => setTarget(toInt(event.target.value));
     return {
       render: () => {
         const { value } = this.props;

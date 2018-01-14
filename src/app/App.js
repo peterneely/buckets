@@ -1,50 +1,20 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import Button from 'material-ui/FloatingActionButton';
-import Redo from 'material-ui/svg-icons/content/redo';
-import Bucket from './Bucket';
-import Target from './Target';
-import * as appActions from './actions';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Game from '_game/Game';
+import muiTheme from '_app/muiTheme';
+
+// This is a class-based component because the current
+// version of hot reloading won't hot reload a stateless
+// component at the top-level.
 
 class App extends Component {
-  app = (() => {
-    const { actions } = this.props;
-    return {
-      render: () => {
-        const { app: { target } } = this.props;
-        return (
-          <div>
-            <Bucket id="left" />
-            <Bucket id="right" />
-            <Target actions={actions} value={target} />
-            <Button>
-              <Redo />
-            </Button>
-          </div>
-        );
-      },
-    };
-  })();
-
   render() {
-    return this.app.render();
+    return (
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <Game />
+      </MuiThemeProvider>
+    );
   }
 }
 
-App.propTypes = {
-  actions: PropTypes.object.isRequired,
-  app: PropTypes.object.isRequired,
-};
-
-function mapStateToProps(state) {
-  const { app } = state;
-  return { app };
-}
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(appActions, dispatch) };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

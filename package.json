@@ -104,7 +104,10 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/tools/assetsTransformer.js",
       "\\.(css)$": "<rootDir>/tools/assetsTransformer.js",
-      "^_app[/](.+)": "<rootDir>/src/app/$1"
+      "^_app[/](.+)": "<rootDir>/src/app/$1",
+      "^_game[/](.+)": "<rootDir>/src/app/game/$1",
+      "^_layout[/](.+)": "<rootDir>/src/app/layout/$1",
+      "^_store[/](.+)": "<rootDir>/src/store/$1"
     },
     "setupFiles": [
       "raf/polyfill",

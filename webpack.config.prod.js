@@ -16,6 +16,9 @@ export default {
     extensions: ['*', '.js', '.jsx', '.json'],
     alias: {
       _app: path.resolve(__dirname, 'src/app/'),
+      _game: path.resolve(__dirname, 'src/app/game/'),
+      _layout: path.resolve(__dirname, 'src/app/layout/'),
+      _store: path.resolve(__dirname, 'src/store/'),
     }
   },
   devtool: 'source-map', // more info:https://webpack.js.org/guides/production/#source-mapping and https://webpack.js.org/configuration/devtool/

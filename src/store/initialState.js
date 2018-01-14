@@ -1,5 +1,5 @@
-import app from '_app/initialState';
+import game from '_game/initialState';
 
 export default {
-  app,
+  game,
 };
