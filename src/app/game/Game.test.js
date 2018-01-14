@@ -1,14 +1,11 @@
 import React from 'react';
 import configureStore from 'redux-mock-store';
-// import { createStore } from 'redux';
 import { shallow } from 'enzyme';
-// import * as actions from './actions';
 import Bucket from './Bucket';
 import Game from './Game';
 import Reset from './Reset';
 import Target from './Target';
 import initialState from '_store/initialState';
-// import rootReducer from '_store/reducers';
 
 describe('Game', () => {
   describe('Layout', () => {
@@ -39,30 +36,4 @@ describe('Game', () => {
       expect(button.length).toEqual(1);
     });
   });
-
-  // describe('Behavior', () => {
-  //   let game;
-  //   let store;
-
-  //   beforeEach(() => {
-  //     store = createStore(rootReducer, initialState);
-  //     game = shallow(<Game />, { context: { store } }).dive();
-  //   });
-
-  //   it('Should enable the reset button when the game state is not the same as the initial game state', () => {
-  //     store.dispatch(actions.setTarget(initialState.game.target + 1));
-  //     expect(store.getState()).not.toEqual(initialState);
-  //     expect(game.find(Reset).props().disabled).toBeTruthy();
-  //   });
-
-  //   it('Should disable the reset button when the game state is the same as the initial game state', () => {
-  //     const reset = game.find(Reset);
-  //     expect(reset.props().disabled).toBeTruthy();
-  //     store.dispatch(actions.setTarget(initialState.game.target + 1));
-  //     expect(store.getState()).not.toEqual(initialState);
-  //     store.dispatch(actions.setTarget(initialState.game.target));
-  //     expect(store.getState()).toEqual(initialState);
-  //     expect(reset.props().disabled).toBeTruthy();
-  //   });
-  // });
 });

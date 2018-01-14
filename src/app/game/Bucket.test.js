@@ -2,15 +2,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Bucket from './Bucket';
 import TextField from 'material-ui/TextField';
-import initialState from '_store/initialState';
+import initialState from './initialState';
 
-const { game: gameState } = initialState;
 const createBucket = ({ bucketId, actions }) => shallow(
   <Bucket
     actions={actions}
     id={bucketId}
-    size={gameState[bucketId].size}
-    value={gameState[bucketId].value}
+    size={initialState[bucketId].size}
+    value={initialState[bucketId].value}
   />
 );
 
@@ -23,7 +22,7 @@ describe('Bucket', () => {
     });
 
     it('Should have the correct defaults', () => {
-      const { size, value } = gameState[bucketId];
+      const { size, value } = initialState[bucketId];
       expect(size).toEqual(1);
       expect(value).toEqual(0);
     });
