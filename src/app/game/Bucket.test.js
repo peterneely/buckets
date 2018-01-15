@@ -4,7 +4,8 @@ import configureStore from 'redux-mock-store';
 import Bucket from './Bucket';
 import Game from './Game';
 import TextField from 'material-ui/TextField';
-import initialState, { fakeStoreStates } from './initialState';
+import initialState from './initialState';
+import { mergeIntoInitialState } from './fakeStates';
 
 const createBucket = ({ bucketId, actions }) => shallow(
   <Bucket
@@ -16,7 +17,7 @@ const createBucket = ({ bucketId, actions }) => shallow(
 );
 
 const createBucketsWhen = state => {
-  const storeState = fakeStoreStates.mergeIntoInitial(() => state);
+  const storeState = mergeIntoInitialState(() => state);
   const store = configureStore()(storeState);
   const game = shallow(<Game />, { context: { store } }).dive();
   return game.find(Bucket);
