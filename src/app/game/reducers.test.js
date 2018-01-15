@@ -1,6 +1,6 @@
 import * as types from './types';
-import initialState from './initialState';
 import reduce from './reducers';
+import initialState from './initialState';
 
 it('Enabled game play correctly', () => {
   const action = { type: types.ENABLE_PLAY };

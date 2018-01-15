@@ -5,46 +5,37 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import * as types from './types';
 import Game from './Game';
 import PlayPause from './PlayPause';
-import initialState from '_store/initialState';
+import { fakeStoreStates } from './initialState';
 
 describe('Reset', () => {
   it('Should disable the play/pause button when the game state is the same as the initial game state', () => {
-    const store = configureStore()(initialState);
+    const store = configureStore()(fakeStoreStates.initial);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeTruthy();
   });
 
   it('Should disable the play/pause button when the game state is not playable', () => {
-    const preventPlayState = { game: { ...initialState.game, preventPlay: true } };
-    const store = configureStore()(preventPlayState);
+    const state = fakeStoreStates.mergeIntoInitial(() => ({ preventPlay: true }));
+    const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeTruthy();
   });
 
   it('Should enable the play/pause button when the game state is not the same as the initial game state', () => {
-    const dirtyState = { game: { ...initialState.game, target: initialState.game.target + 1 } };
-    const store = configureStore()(dirtyState);
+    const state = fakeStoreStates.mergeIntoInitial(initial => ({ target: initial.target + 1 }));
+    const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeFalsy();
   });
 
   it('Should enable the play/pause button when the game state is playable', () => {
-    const playableState = {
-      game: {
-        ...initialState.game,
-        left: { ...initialState.game.left, size: 3 },
-        preventPlay: false,
-        right: { ...initialState.game.right, size: 5 },
-        target: 4,
-      },
-    };
-    const store = configureStore()(playableState);
+    const store = configureStore()(fakeStoreStates.playable);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeFalsy();
   });
 
   it('Should dispatch the correct action when Play is pressed', () => {
-    const store = configureStore()(initialState);
+    const store = configureStore()(fakeStoreStates.initial);
     const game = shallow(<Game />, { context: { store } }).dive();
     game.find(PlayPause).dive().find(FloatingActionButton).simulate('click');
     expect(store.getActions()[0]).toEqual({ type: types.PLAY_GAME });
@@ -56,8 +47,8 @@ describe('Reset', () => {
   });
 
   it('Should dispatch the correct action when Pause is pressed', () => {
-    const playingState = { game: { ...initialState.game, playing: true } };
-    const store = configureStore()(playingState);
+    const state = fakeStoreStates.mergeIntoInitial(() => ({ playing: true }));
+    const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     game.find(PlayPause).dive().find(FloatingActionButton).simulate('click');
     expect(store.getActions()[0]).toEqual({ type: types.PAUSE_GAME });

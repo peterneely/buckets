@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { toInt } from '_layout/format';
-import initialState from '_store/initialState';
+import { fakeStoreStates } from './initialState';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {
@@ -34,7 +34,7 @@ describe('setBucketSize', () => {
 
   it('Should allow the size to be increased', () => {
     ['2', '3', '4', '100'].forEach(size => {
-      const store = configureStore([thunk])(initialState);
+      const store = configureStore([thunk])(fakeStoreStates.initial);
       store.dispatch(actionCreators.setBucketSize(bucketId, size));
       const actions = store.getActions();
       expect(actions[0]).toEqual({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: toInt(size) } });
@@ -47,30 +47,14 @@ describe('setBucketSize', () => {
   });
 
   it('Should prevent game play if two bucket sizes are even numbers and the target size is an odd number', () => {
-    const preventPlayState = {
-      game: {
-        ...initialState.game,
-        left: { ...initialState.game.left, size: 2 },
-        right: { ...initialState.game.right, size: 4 },
-        target: 3,
-      },
-    };
-    const store = configureStore([thunk])(preventPlayState);
+    const store = configureStore([thunk])(fakeStoreStates.notPlayable);
     store.dispatch(actionCreators.setBucketSize('right', '4')); // Triggers the prevent play action, doesn't set the state
     const actions = store.getActions();
     expect(_.last(actions)).toEqual({ type: types.PREVENT_PLAY });
   });
 
   it('Should enable game play if the target size is achievable', () => {
-    const playableState = {
-      game: {
-        ...initialState.game,
-        left: { ...initialState.game.left, size: 3 },
-        right: { ...initialState.game.right, size: 5 },
-        target: 4,
-      },
-    };
-    const store = configureStore([thunk])(playableState);
+    const store = configureStore([thunk])(fakeStoreStates.playable);
     store.dispatch(actionCreators.setBucketSize('right', '5')); // Triggers the prevent play action, doesn't set the state
     const actions = store.getActions();
     expect(_.last(actions)).toEqual({ type: types.ENABLE_PLAY });
@@ -85,7 +69,7 @@ describe('setTargetSize', () => {
 
   it('Should allow the size to be increased', () => {
     ['2', '3', '4', '100'].forEach(size => {
-      const store = configureStore([thunk])(initialState);
+      const store = configureStore([thunk])(fakeStoreStates.initial);
       store.dispatch(actionCreators.setTargetSize(size));
       const actions = store.getActions();
       expect(actions[0]).toEqual({ type: types.SET_TARGET_SIZE, payload: toInt(size) });
@@ -98,30 +82,14 @@ describe('setTargetSize', () => {
   });
 
   it('Should prevent game play if two bucket sizes are even numbers and the target size is an odd number', () => {
-    const preventPlayState = {
-      game: {
-        ...initialState.game,
-        left: { ...initialState.game.left, size: 2 },
-        right: { ...initialState.game.right, size: 4 },
-        target: 3,
-      },
-    };
-    const store = configureStore([thunk])(preventPlayState);
+    const store = configureStore([thunk])(fakeStoreStates.notPlayable);
     store.dispatch(actionCreators.setTargetSize('3')); // Triggers the prevent play action, doesn't set the state
     const actions = store.getActions();
     expect(_.last(actions)).toEqual({ type: types.PREVENT_PLAY });
   });
 
   it('Should enable game play if the target size is achievable', () => {
-    const playableState = {
-      game: {
-        ...initialState.game,
-        left: { ...initialState.game.left, size: 3 },
-        right: { ...initialState.game.right, size: 5 },
-        target: 4,
-      },
-    };
-    const store = configureStore([thunk])(playableState);
+    const store = configureStore([thunk])(fakeStoreStates.playable);
     store.dispatch(actionCreators.setTargetSize('4')); // Triggers the prevent play action, doesn't set the state
     const actions = store.getActions();
     expect(_.last(actions)).toEqual({ type: types.ENABLE_PLAY });

@@ -6,14 +6,14 @@ import Game from './Game';
 import PlayPause from './PlayPause';
 import Reset from './Reset';
 import Target from './Target';
-import initialState from '_store/initialState';
+import { fakeStoreStates } from './initialState';
 
 describe('Game', () => {
   describe('Layout', () => {
     let game;
 
     beforeEach(() => {
-      const store = configureStore()(initialState);
+      const store = configureStore()(fakeStoreStates.initial);
       game = shallow(<Game />, { context: { store } }).dive();
     });
 
