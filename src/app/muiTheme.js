@@ -1,11 +1,19 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { lightGreen500, red50 } from 'material-ui/styles/colors';
+import { lightGreen500, red50, red500 } from 'material-ui/styles/colors';
 
-export const theme = {
-  palette: {
-    primary1Color: lightGreen500,
-    primary3Color: red50,
-  }
+export const animations = {
+  transition: 'all 0.3s ease',
 };
 
-export default getMuiTheme(theme);
+export const colors = {
+  errors: {
+    backgroundColor: red50,
+    color: red500,
+  },
+};
+
+export default getMuiTheme({
+  palette: {
+    primary1Color: lightGreen500,
+  },
+});

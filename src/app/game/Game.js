@@ -12,9 +12,8 @@ import Target from './Target';
 import initialState from './initialState';
 
 class Game extends Component {
-  game = (() => {
-    const { actions } = this.props;
-    const containerStyle = {
+  styles = {
+    containerStyle: {
       display: 'flex',
       flexDirection: 'column',
       fontFamily: 'Roboto',
@@ -22,21 +21,25 @@ class Game extends Component {
       fontWeight: 400,
       justifyContent: 'center',
       width: '100%',
-    };
-    const rowStyle = { display: 'flex', justifyContent: 'center' };
-    const elementContainerStyle = { margin: 30 };
+    },
+    elementContainerStyle: { margin: 30 },
+    rowStyle: { display: 'flex', justifyContent: 'center' },
+  };
+
+  game = (styles => {
+    const { actions } = this.props;
+    const { containerStyle, elementContainerStyle, rowStyle } = styles;
     return {
       render: () => {
         const { game } = this.props;
         const { buckets: { left, right }, errorMessages, play: { disabled, paused, started }, target } = game;
-        const isDefaultState = _.isEqual(game, initialState);
-        const disableSize = started || paused;
+        const disableInput = started || paused;
         return (
           <div style={containerStyle}>
             <div style={rowStyle}>
               <Target
                 actions={actions}
-                disabled={disableSize}
+                disabled={disableInput}
                 style={elementContainerStyle}
                 value={target}
               />
@@ -44,7 +47,7 @@ class Game extends Component {
             <div style={rowStyle}>
               <Bucket
                 actions={actions}
-                disabled={disableSize}
+                disabled={disableInput}
                 id="left"
                 size={left.size}
                 style={elementContainerStyle}
@@ -52,7 +55,7 @@ class Game extends Component {
               />
               <Bucket
                 actions={actions}
-                disabled={disableSize}
+                disabled={disableInput}
                 id="right"
                 size={right.size}
                 style={elementContainerStyle}
@@ -69,7 +72,7 @@ class Game extends Component {
               />
               <Reset
                 actions={actions}
-                disabled={isDefaultState}
+                disabled={_.isEqual(game, initialState)}
                 style={elementContainerStyle}
               />
             </div>
@@ -82,7 +85,7 @@ class Game extends Component {
         );
       },
     };
-  })();
+  })(this.styles);
 
   render() {
     return this.game.render();
