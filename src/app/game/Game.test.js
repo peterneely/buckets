@@ -3,6 +3,7 @@ import configureStore from 'redux-mock-store';
 import { shallow } from 'enzyme';
 import Bucket from './Bucket';
 import Game from './Game';
+import PlayPause from './PlayPause';
 import Reset from './Reset';
 import Target from './Target';
 import initialState from '_store/initialState';
@@ -29,6 +30,11 @@ describe('Game', () => {
     it('Should have a target', () => {
       const target = game.find(Target);
       expect(target.length).toEqual(1);
+    });
+
+    it('Should have a play/pause button', () => {
+      const button = game.find(PlayPause);
+      expect(button.length).toEqual(1);
     });
 
     it('Should have a reset button', () => {

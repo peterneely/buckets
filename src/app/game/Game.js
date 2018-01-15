@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import * as gameActions from './actions';
 import Bucket from './Bucket';
+import PlayPause from './PlayPause';
 import Reset from './Reset';
 import Target from './Target';
 import initialState from './initialState';
@@ -18,7 +19,7 @@ class Game extends Component {
       render: () => {
         const { game } = this.props;
         const { left, right, target } = game;
-        const canReset = !_.isEqual(game, initialState);
+        const isDefaultState = _.isEqual(game, initialState);
         return (
           <div style={containerStyle}>
             <Bucket
@@ -40,9 +41,14 @@ class Game extends Component {
               style={elementContainerStyle}
               value={target}
             />
+            <PlayPause
+              actions={actions}
+              disabled={isDefaultState}
+              style={elementContainerStyle}
+            />
             <Reset
               actions={actions}
-              disabled={!canReset}
+              disabled={isDefaultState}
               style={elementContainerStyle}
             />
           </div>

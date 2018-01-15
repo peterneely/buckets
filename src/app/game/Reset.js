@@ -50,18 +50,22 @@ class Reset extends Component {
   button = (() => {
     const handleReset = () => this.setState({ confirm: true });
     return {
-      render: () => (
-        <FloatingActionButton disabled={this.props.disabled} onClick={handleReset}>
-          <Redo />
-        </FloatingActionButton>
-      ),
+      render: () => {
+        const { disabled, style = {} } = this.props;
+        return (
+          <div style={style}>
+            <FloatingActionButton disabled={disabled} onClick={handleReset}>
+              <Redo />
+            </FloatingActionButton>
+          </div>
+        );
+      },
     };
   })();
 
   render() {
-    const { style = {} } = this.props;
     return (
-      <div style={style}>
+      <div>
         {this.button.render()}
         {this.dialog.render()}
       </div>
