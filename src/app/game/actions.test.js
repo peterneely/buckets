@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
-import { toInt } from '_layout/format';
+import { penultimate, toInt } from '_layout/format';
 import { nonPlayableState, playableState } from './fakeStates';
 
 describe('pauseGame', () => {
@@ -48,13 +48,22 @@ describe('setBucketSize', () => {
   it('Should disable game play if two bucket sizes are even numbers and the target size is an odd number', () => {
     const store = configureStore([thunk])(nonPlayableState);
     store.dispatch(actionCreators.setBucketSize('right', '4')); // Triggers the prevent play action, doesn't set the state
-    expect(_.last(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: true });
+    expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: true });
+  });
+
+  it('Should set an error message for each validation rules that fails', () => {
+    const store = configureStore([thunk])(nonPlayableState);
+    store.dispatch(actionCreators.setBucketSize('right', '4')); // Triggers the prevent play action, doesn't set the state
+    const action = _.last(store.getActions());
+    expect(action.type).toEqual(types.SET_ERROR_MESSAGES);
+    expect(action.payload.length).not.toEqual(0);
   });
 
   it('Should enable game play if the target size is achievable', () => {
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.setBucketSize('right', '5')); // Triggers the prevent play action, doesn't set the state
-    expect(_.last(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
+    expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
+    expect(_.last(store.getActions())).toEqual({ type: types.SET_ERROR_MESSAGES, payload: [] });
   });
 });
 
@@ -77,15 +86,24 @@ describe('setTargetSize', () => {
     expect(action).toEqual({ type: types.NO_ACTION });
   });
 
-  it('Should disable game play if two bucket sizes are even numbers and the target size is an odd number', () => {
+  it('Should disable game play if any validation rule fails', () => {
     const store = configureStore([thunk])(nonPlayableState);
     store.dispatch(actionCreators.setTargetSize('3')); // Triggers the prevent play action, doesn't set the state
-    expect(_.last(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: true });
+    expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: true });
   });
 
-  it('Should enable game play if the target size is achievable', () => {
+  it('Should set an error message for each validation rules that fails', () => {
+    const store = configureStore([thunk])(nonPlayableState);
+    store.dispatch(actionCreators.setTargetSize('3')); // Triggers the prevent play action, doesn't set the state
+    const action = _.last(store.getActions());
+    expect(action.type).toEqual(types.SET_ERROR_MESSAGES);
+    expect(action.payload.length).not.toEqual(0);
+  });
+
+  it('Should enable game play if all validation rules pass', () => {
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.setTargetSize('4')); // Triggers the prevent play action, doesn't set the state
-    expect(_.last(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
+    expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
+    expect(_.last(store.getActions())).toEqual({ type: types.SET_ERROR_MESSAGES, payload: [] });
   });
 });

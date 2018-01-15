@@ -5,7 +5,7 @@ export default {
     right: { size: 5, value: 0 },
     small: 'left',
   },
-  errors: {},
+  errorMessages: [],
   log: [],
   play: {
     disabled: false,

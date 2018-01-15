@@ -1,6 +1,6 @@
 import * as types from './types';
 import { toInt } from '_layout/format';
-import { shouldDisableGame } from './play';
+import { validators } from './gameValidators';
 
 export function pauseGame() {
   return { type: types.PAUSE_GAME };
@@ -43,7 +43,9 @@ function setSize({ size, ifValid }) {
 
 function tryDisableGame() {
   return (dispatch, getState) => {
-    const { game: { buckets: { left, right }, target } } = getState();
-    dispatch({ type: types.DISABLE_GAME, payload: shouldDisableGame({ left, right, target }) });
+    const invalidResults = validators.map(({ isValid }) => isValid(getState)).filter(({ valid }) => !valid);
+    const errorMesages = invalidResults.map(({ errorMesage }) => errorMesage);
+    dispatch({ type: types.DISABLE_GAME, payload: !!invalidResults.length });
+    dispatch({ type: types.SET_ERROR_MESSAGES, payload: errorMesages });
   };
 }
