@@ -64,9 +64,6 @@ class Reset extends Component {
   })();
 
   render() {
-    // Couldn't get <Fragment /> or <> </> working.
-    // Tried https://reactjs.org/blog/2017/11/28/react-v16.2.0-fragment-support.html
-    // Produced node module conflicts.
     return (
       <div>
         {this.button.render()}

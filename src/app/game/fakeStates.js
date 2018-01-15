@@ -1,16 +1,20 @@
+import _ from 'lodash';
 import initialState from './initialState';
 
-export const notPlayableState = addToGame({
+export const nonPlayableState = addToGame({
   ...initialState,
-  left: { ...initialState.left, size: 2 },
-  right: { ...initialState.right, size: 4 },
+  buckets: {
+    ...initialState.buckets,
+    left: { ...initialState.buckets.left, size: 2 },
+    right: { ...initialState.buckets.right, size: 4 },
+  },
   target: 3,
 });
 
 export const playableState = addToGame(initialState);
 
 export function mergeIntoInitialState(getState) {
-  return addToGame({ ...initialState, ...getState(initialState) });
+  return addToGame(_.merge({}, initialState, getState(initialState)));
 }
 
 function addToGame(state) {

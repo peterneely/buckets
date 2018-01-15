@@ -7,7 +7,7 @@ import Target from './Target';
 import { mergeIntoInitialState } from './fakeStates';
 
 const createTargetWhen = state => {
-  const storeState = mergeIntoInitialState(() => state);
+  const storeState = mergeIntoInitialState(() => ({ play: { ...state } }));
   const store = configureStore()(storeState);
   const game = shallow(<Game />, { context: { store } }).dive();
   return game.find(Target);
@@ -36,8 +36,8 @@ describe('Target', () => {
     expect(mockActions.setTargetSize).toHaveBeenCalled();
   });
 
-  it('Should disable the target size when the game is playing', () => {
-    expect(createTargetWhen({ playing: true }).props().disabled).toBeTruthy();
+  it('Should disable the target size when the game has started', () => {
+    expect(createTargetWhen({ started: true }).props().disabled).toBeTruthy();
   });
 
   it('Should disable the target size when the game is paused', () => {

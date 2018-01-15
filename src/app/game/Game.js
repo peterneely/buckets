@@ -13,49 +13,57 @@ import initialState from './initialState';
 class Game extends Component {
   game = (() => {
     const { actions } = this.props;
-    const containerStyle = { display: 'flex', justifyContent: 'center', width: '100%' };
+    const containerStyle = { display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' };
+    const rowStyle = { display: 'flex', justifyContent: 'center' };
     const elementContainerStyle = { margin: 30 };
     return {
       render: () => {
         const { game } = this.props;
-        const { left, paused, playing, preventPlay, right, target } = game;
+        const { buckets: { left, right }, play: { disabled, paused, started }, target } = game;
         const isDefaultState = _.isEqual(game, initialState);
-        const disableSize = playing || paused;
+        const disableSize = started || paused;
         return (
           <div style={containerStyle}>
-            <Bucket
-              actions={actions}
-              disabled={disableSize}
-              id="left"
-              size={left.size}
-              style={elementContainerStyle}
-              value={left.value}
-            />
-            <Bucket
-              actions={actions}
-              disabled={disableSize}
-              id="right"
-              size={right.size}
-              style={elementContainerStyle}
-              value={right.value}
-            />
-            <Target
-              actions={actions}
-              disabled={disableSize}
-              style={elementContainerStyle}
-              value={target}
-            />
-            <PlayPause
-              actions={actions}
-              disabled={preventPlay}
-              playing={playing}
-              style={elementContainerStyle}
-            />
-            <Reset
-              actions={actions}
-              disabled={isDefaultState}
-              style={elementContainerStyle}
-            />
+            <div style={rowStyle}>
+              <Target
+                actions={actions}
+                disabled={disableSize}
+                style={elementContainerStyle}
+                value={target}
+              />
+            </div>
+            <div style={rowStyle}>
+              <Bucket
+                actions={actions}
+                disabled={disableSize}
+                id="left"
+                size={left.size}
+                style={elementContainerStyle}
+                value={left.value}
+              />
+              <Bucket
+                actions={actions}
+                disabled={disableSize}
+                id="right"
+                size={right.size}
+                style={elementContainerStyle}
+                value={right.value}
+              />
+            </div>
+            <div style={rowStyle}>
+              <PlayPause
+                actions={actions}
+                disabled={disabled}
+                paused={paused}
+                started={started}
+                style={elementContainerStyle}
+              />
+              <Reset
+                actions={actions}
+                disabled={isDefaultState}
+                style={elementContainerStyle}
+              />
+            </div>
           </div>
         );
       },

@@ -6,15 +6,16 @@ import Pause from 'material-ui/svg-icons/av/pause';
 
 class PlayPause extends Component {
   button = (() => {
-    const { actions: { pauseGame, playGame } } = this.props;
-    const handlePlayPause = playing => () => playing ? pauseGame() : playGame();
+    const { actions: { pauseGame, startGame } } = this.props;
+    const handlePlayPause = start => () => start ? startGame() : pauseGame();
     return {
       render: () => {
-        const { disabled, playing, style = {} } = this.props;
+        const { disabled, paused, started, style = {} } = this.props;
+        const start = !started || paused;
         return (
           <div style={style}>
-            <FloatingActionButton disabled={disabled} onClick={handlePlayPause(playing)}>
-              {playing ? <Pause /> : <Play />}
+            <FloatingActionButton disabled={disabled} onClick={handlePlayPause(start)}>
+              {start ? <Play /> : <Pause />}
             </FloatingActionButton>
           </div>
         );
@@ -30,7 +31,8 @@ class PlayPause extends Component {
 PlayPause.propTypes = {
   actions: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
-  playing: PropTypes.bool,
+  paused: PropTypes.bool,
+  started: PropTypes.bool,
   style: PropTypes.object,
 };
 

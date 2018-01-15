@@ -1,9 +1,9 @@
-import { notPlayableState } from './fakeStates';
-import { preventPlay } from './play';
+import { nonPlayableState } from './fakeStates';
+import { shouldDisableGame } from './play';
 
-describe('preventPlay', () => {
+describe('shouldDisableGame', () => {
   it('Returns true when two bucket sizes are even numbers and the target size is an odd number', () => {
-    const { left, right, target } = notPlayableState.game;
-    expect(preventPlay({ left, right, target })).toBeTruthy();
+    const { buckets: { left, right }, target } = nonPlayableState.game;
+    expect(shouldDisableGame({ left, right, target })).toBeTruthy();
   });
 });

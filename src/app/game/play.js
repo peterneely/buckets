@@ -1,4 +1,4 @@
-export function preventPlay({ left, right, target }) {
+export function shouldDisableGame({ left, right, target }) {
   return isEven(left.size) && isEven(right.size) && isOdd(target);
 }
 

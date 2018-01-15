@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 class Target extends Component {
   target = (() => {
     const { actions: { setTargetSize }, style = {} } = this.props;
+    const inputStyle = { width: 100 };
     const handleChange = (event, newValue) => setTargetSize(newValue);
     return {
       render: () => {
@@ -13,8 +14,9 @@ class Target extends Component {
           <div style={style}>
             <TextField
               disabled={disabled}
-              floatingLabelText="Size"
+              floatingLabelText="Target Size"
               onChange={handleChange}
+              style={inputStyle}
               type="number"
               value={value}
             />

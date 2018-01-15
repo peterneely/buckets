@@ -2,24 +2,24 @@ import * as types from './types';
 import reduce from './reducers';
 import initialState from './initialState';
 
-it('Enabled game play correctly', () => {
-  const action = { type: types.ENABLE_PLAY };
-  expect(reduce({}, action)).toEqual({ preventPlay: false });
+it('Enables game play correctly', () => {
+  const action = { type: types.DISABLE_GAME, payload: false };
+  expect(reduce({}, action)).toEqual({ play: { disabled: false } });
 });
 
-it('Pauses the game correctly', () => {
+it('Disables game play correctly', () => {
+  const action = { type: types.DISABLE_GAME, payload: true };
+  expect(reduce({}, action)).toEqual({ play: { disabled: true } });
+});
+
+it('Pauses game play correctly', () => {
   const action = { type: types.PAUSE_GAME };
-  expect(reduce({}, action)).toEqual({ paused: true, playing: false });
+  expect(reduce({}, action)).toEqual({ play: { paused: true } });
 });
 
-it('Plays the game correctly', () => {
-  const action = { type: types.PLAY_GAME };
-  expect(reduce({}, action)).toEqual({ playing: true });
-});
-
-it('Prevents game play correctly', () => {
-  const action = { type: types.PREVENT_PLAY };
-  expect(reduce({}, action)).toEqual({ preventPlay: true });
+it('Starts game play correctly', () => {
+  const action = { type: types.START_GAME };
+  expect(reduce({}, action)).toEqual({ play: { paused: false, started: true } });
 });
 
 it('Resets game correctly', () => {
@@ -31,7 +31,7 @@ it('Sets bucket size correctly', () => {
   ['left', 'right'].forEach(bucketId => {
     [1, 2, 3, 100].forEach(size => {
       const action = { type: types.SET_BUCKET_SIZE, payload: { bucketId, size } };
-      expect(reduce({}, action)).toEqual({ [bucketId]: { size } });
+      expect(reduce({ buckets: {} }, action)).toEqual({ buckets: { [bucketId]: { size } } });
     });
   });
 });

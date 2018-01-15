@@ -1,11 +1,16 @@
 export default {
-  big: 'right',
-  left: { size: 3, value: 0 },
+  buckets: {
+    big: 'right',
+    left: { size: 3, value: 0 },
+    right: { size: 5, value: 0 },
+    small: 'left',
+  },
+  errors: {},
   log: [],
-  paused: false,
-  playing: false,
-  preventPlay: false,
-  right: { size: 5, value: 0 },
-  small: 'left',
+  play: {
+    disabled: false,
+    paused: false,
+    started: false,
+  },
   target: 4,
 };

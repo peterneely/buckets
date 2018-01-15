@@ -7,17 +7,13 @@ import TextField from 'material-ui/TextField';
 import initialState from './initialState';
 import { mergeIntoInitialState } from './fakeStates';
 
-const createBucket = ({ bucketId, actions }) => shallow(
-  <Bucket
-    actions={actions}
-    id={bucketId}
-    size={initialState[bucketId].size}
-    value={initialState[bucketId].value}
-  />
-);
+const createBucket = ({ bucketId, actions }) => {
+  const { buckets: { [bucketId]: { size, value } } } = initialState;
+  return shallow(<Bucket actions={actions} id={bucketId} size={size} value={value} />);
+};
 
 const createBucketsWhen = state => {
-  const storeState = mergeIntoInitialState(() => state);
+  const storeState = mergeIntoInitialState(() => ({ play: { ...state } }));
   const store = configureStore()(storeState);
   const game = shallow(<Game />, { context: { store } }).dive();
   return game.find(Bucket);
@@ -38,7 +34,7 @@ describe('Bucket', () => {
     });
 
     it('Should disable the bucket size when the game is playing', () => {
-      createBucketsWhen({ playing: true }).forEach(bucket => {
+      createBucketsWhen({ started: true }).forEach(bucket => {
         expect(bucket.props().disabled).toBeTruthy();
       });
     });

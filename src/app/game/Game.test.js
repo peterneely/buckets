@@ -35,7 +35,8 @@ describe('Game', () => {
     it('Should have a play/pause button', () => {
       const button = game.find(PlayPause);
       expect(button.length).toEqual(1);
-      expect(button.props().playing).toBeDefined();
+      expect(button.props().paused).toBeDefined();
+      expect(button.props().started).toBeDefined();
     });
 
     it('Should have a reset button', () => {

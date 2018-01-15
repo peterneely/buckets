@@ -5,6 +5,7 @@ import TextField from 'material-ui/TextField';
 class Bucket extends Component {
   bucket = (() => {
     const { actions: { setBucketSize }, id, style = {} } = this.props;
+    const inputStyle = { width: 100 };
     const handleSetValue = (event, newValue) => setBucketSize(id, newValue);
     return {
       render: () => {
@@ -15,6 +16,7 @@ class Bucket extends Component {
               disabled={disabled}
               floatingLabelText="Size"
               onChange={handleSetValue}
+              style={inputStyle}
               type="number"
               value={size}
             />
