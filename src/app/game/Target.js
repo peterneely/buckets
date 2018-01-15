@@ -8,10 +8,11 @@ class Target extends Component {
     const handleChange = (event, newValue) => setTargetSize(newValue);
     return {
       render: () => {
-        const { value } = this.props;
+        const { disabled, value } = this.props;
         return (
           <div style={style}>
             <TextField
+              disabled={disabled}
               floatingLabelText="Size"
               onChange={handleChange}
               type="number"
@@ -30,6 +31,7 @@ class Target extends Component {
 
 Target.propTypes = {
   actions: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   style: PropTypes.object,
   value: PropTypes.number.isRequired,
 };

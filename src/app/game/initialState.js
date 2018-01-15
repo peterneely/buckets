@@ -1,11 +1,13 @@
 const initialState = {
-  left: { size: 1, value: 0 },
+  big: 'right',
+  left: { size: 3, value: 0 },
   log: [],
+  paused: false,
   playing: false,
   preventPlay: false,
-  paused: false,
-  right: { size: 1, value: 0 },
-  target: 1,
+  right: { size: 5, value: 0 },
+  small: 'left',
+  target: 4,
 };
 
 export const fakeStoreStates = {

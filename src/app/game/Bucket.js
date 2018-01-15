@@ -8,10 +8,11 @@ class Bucket extends Component {
     const handleSetValue = (event, newValue) => setBucketSize(id, newValue);
     return {
       render: () => {
-        const { size } = this.props;
+        const { disabled, size } = this.props;
         return (
           <div style={style}>
             <TextField
+              disabled={disabled}
               floatingLabelText="Size"
               onChange={handleSetValue}
               type="number"
@@ -30,6 +31,7 @@ class Bucket extends Component {
 
 Bucket.propTypes = {
   actions: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   style: PropTypes.object,

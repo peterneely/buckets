@@ -1,7 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import configureStore from 'redux-mock-store';
+import Game from './Game';
 import TextField from 'material-ui/TextField';
 import Target from './Target';
+import { fakeStoreStates } from './initialState';
+
+const createTargetWhen = state => {
+  const storeState = fakeStoreStates.mergeIntoInitial(() => state);
+  const store = configureStore()(storeState);
+  const game = shallow(<Game />, { context: { store } }).dive();
+  return game.find(Target);
+};
 
 describe('Target', () => {
   let mockActions;
@@ -24,5 +34,13 @@ describe('Target', () => {
   it('Should dispatch the correct action when the size is changed', () => {
     input.simulate('change');
     expect(mockActions.setTargetSize).toHaveBeenCalled();
+  });
+
+  it('Should disable the target size when the game is playing', () => {
+    expect(createTargetWhen({ playing: true }).props().disabled).toBeTruthy();
+  });
+
+  it('Should disable the target size when the game is paused', () => {
+    expect(createTargetWhen({ paused: true }).props().disabled).toBeTruthy();
   });
 });

@@ -8,11 +8,11 @@ import PlayPause from './PlayPause';
 import { fakeStoreStates } from './initialState';
 
 describe('Reset', () => {
-  it('Should disable the play/pause button when the game state is the same as the initial game state', () => {
-    const store = configureStore()(fakeStoreStates.initial);
-    const game = shallow(<Game />, { context: { store } }).dive();
-    expect(game.find(PlayPause).props().disabled).toBeTruthy();
-  });
+  // it('Should disable the play/pause button when the game state is the same as the initial game state', () => {
+  //   const store = configureStore()(fakeStoreStates.initial);
+  //   const game = shallow(<Game />, { context: { store } }).dive();
+  //   expect(game.find(PlayPause).props().disabled).toBeTruthy();
+  // });
 
   it('Should disable the play/pause button when the game state is not playable', () => {
     const state = fakeStoreStates.mergeIntoInitial(() => ({ preventPlay: true }));

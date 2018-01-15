@@ -18,12 +18,14 @@ class Game extends Component {
     return {
       render: () => {
         const { game } = this.props;
-        const { left, playing, preventPlay, right, target } = game;
+        const { left, paused, playing, preventPlay, right, target } = game;
         const isDefaultState = _.isEqual(game, initialState);
+        const disableSize = playing || paused;
         return (
           <div style={containerStyle}>
             <Bucket
               actions={actions}
+              disabled={disableSize}
               id="left"
               size={left.size}
               style={elementContainerStyle}
@@ -31,6 +33,7 @@ class Game extends Component {
             />
             <Bucket
               actions={actions}
+              disabled={disableSize}
               id="right"
               size={right.size}
               style={elementContainerStyle}
@@ -38,12 +41,13 @@ class Game extends Component {
             />
             <Target
               actions={actions}
+              disabled={disableSize}
               style={elementContainerStyle}
               value={target}
             />
             <PlayPause
               actions={actions}
-              disabled={isDefaultState || preventPlay}
+              disabled={preventPlay}
               playing={playing}
               style={elementContainerStyle}
             />
