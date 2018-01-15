@@ -18,7 +18,7 @@ class Game extends Component {
     return {
       render: () => {
         const { game } = this.props;
-        const { left, playing, right, target } = game;
+        const { left, playing, preventPlay, right, target } = game;
         const isDefaultState = _.isEqual(game, initialState);
         return (
           <div style={containerStyle}>
@@ -43,7 +43,7 @@ class Game extends Component {
             />
             <PlayPause
               actions={actions}
-              disabled={isDefaultState}
+              disabled={isDefaultState || preventPlay}
               playing={playing}
               style={elementContainerStyle}
             />

@@ -14,11 +14,36 @@ export function resetGame() {
 }
 
 export function setBucketSize(bucketId, size) {
-  return setSize({ size, onValid: sizeInt => ({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: sizeInt } }) });
+  const onValid = sizeInt => {
+    return (dispatch, getState) => {
+      dispatch({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: sizeInt } });
+      dispatch({ type: preventPlay(getState) ? types.PREVENT_PLAY : types.ENABLE_PLAY });
+    };
+  };
+  return setSize({ size, onValid });
 }
 
 export function setTargetSize(size) {
-  return setSize({ size, onValid: sizeInt => ({ type: types.SET_TARGET_SIZE, payload: sizeInt }) });
+  const onValid = sizeInt => {
+    return (dispatch, getState) => {
+      dispatch({ type: types.SET_TARGET_SIZE, payload: sizeInt });
+      dispatch({ type: preventPlay(getState) ? types.PREVENT_PLAY : types.ENABLE_PLAY });
+    };
+  };
+  return setSize({ size, onValid });
+}
+
+function isEven(number) {
+  return number % 2 === 0;
+}
+
+function isOdd(number) {
+  return number % 2 === 1;
+}
+
+function preventPlay(getState) {
+  const { game: { left, right, target } } = getState();
+  return isEven(left.size) && isEven(right.size) && isOdd(target);
 }
 
 function setSize({ size, onValid }) {

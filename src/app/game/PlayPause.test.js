@@ -14,9 +14,31 @@ describe('Reset', () => {
     expect(game.find(PlayPause).props().disabled).toBeTruthy();
   });
 
+  it('Should disable the play/pause button when the game state is not playable', () => {
+    const preventPlayState = { game: { ...initialState.game, preventPlay: true } };
+    const store = configureStore()(preventPlayState);
+    const game = shallow(<Game />, { context: { store } }).dive();
+    expect(game.find(PlayPause).props().disabled).toBeTruthy();
+  });
+
   it('Should enable the play/pause button when the game state is not the same as the initial game state', () => {
     const dirtyState = { game: { ...initialState.game, target: initialState.game.target + 1 } };
     const store = configureStore()(dirtyState);
+    const game = shallow(<Game />, { context: { store } }).dive();
+    expect(game.find(PlayPause).props().disabled).toBeFalsy();
+  });
+
+  it('Should enable the play/pause button when the game state is playable', () => {
+    const playableState = {
+      game: {
+        ...initialState.game,
+        left: { ...initialState.game.left, size: 3 },
+        preventPlay: false,
+        right: { ...initialState.game.right, size: 5 },
+        target: 4,
+      },
+    };
+    const store = configureStore()(playableState);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeFalsy();
   });

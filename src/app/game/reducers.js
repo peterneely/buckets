@@ -4,10 +4,14 @@ import * as types from './types';
 export default function reduce(state = initialState, action) {
   const { payload, type } = action;
   switch (type) {
+    case types.ENABLE_PLAY:
+      return { ...state, preventPlay: false };
     case types.PAUSE_GAME:
       return { ...state, paused: true, playing: false };
     case types.PLAY_GAME:
       return { ...state, playing: true };
+    case types.PREVENT_PLAY:
+      return { ...state, preventPlay: true };
     case types.RESET_GAME:
       return { ...initialState };
     case types.SET_BUCKET_SIZE:
