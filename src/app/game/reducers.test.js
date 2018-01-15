@@ -47,3 +47,15 @@ it('Returns the correct default state if no action is reduced', () => {
   const action = { type: types.NO_ACTION };
   expect(reduce({}, action)).toEqual({});
 });
+
+it('Sets error messages correctly', () => {
+  const errorMessages = ['some error message', 'another error message'];
+  const action = { type: types.SET_ERROR_MESSAGES, payload: errorMessages };
+  expect(reduce({}, action)).toEqual({ errorMessages });
+});
+
+it('Clears error messages correctly', () => {
+  const errorMessages = [];
+  const action = { type: types.SET_ERROR_MESSAGES, payload: errorMessages };
+  expect(reduce({}, action)).toEqual({ errorMessages });
+});

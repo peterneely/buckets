@@ -44,8 +44,8 @@ function setSize({ size, ifValid }) {
 function tryDisableGame() {
   return (dispatch, getState) => {
     const invalidResults = validators.map(({ isValid }) => isValid(getState)).filter(({ valid }) => !valid);
-    const errorMesages = invalidResults.map(({ errorMesage }) => errorMesage);
+    const errorMessages = invalidResults.map(({ errorMessage }) => errorMessage);
     dispatch({ type: types.DISABLE_GAME, payload: !!invalidResults.length });
-    dispatch({ type: types.SET_ERROR_MESSAGES, payload: errorMesages });
+    dispatch({ type: types.SET_ERROR_MESSAGES, payload: errorMessages });
   };
 }

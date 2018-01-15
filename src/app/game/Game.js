@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import _ from 'lodash';
 import * as gameActions from './actions';
 import Bucket from './Bucket';
+import Errors from './Errors';
 import PlayPause from './PlayPause';
 import Reset from './Reset';
 import Target from './Target';
@@ -13,13 +14,21 @@ import initialState from './initialState';
 class Game extends Component {
   game = (() => {
     const { actions } = this.props;
-    const containerStyle = { display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100%' };
+    const containerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      fontFamily: 'Roboto',
+      fontSize: 16,
+      fontWeight: 400,
+      justifyContent: 'center',
+      width: '100%',
+    };
     const rowStyle = { display: 'flex', justifyContent: 'center' };
     const elementContainerStyle = { margin: 30 };
     return {
       render: () => {
         const { game } = this.props;
-        const { buckets: { left, right }, play: { disabled, paused, started }, target } = game;
+        const { buckets: { left, right }, errorMessages, play: { disabled, paused, started }, target } = game;
         const isDefaultState = _.isEqual(game, initialState);
         const disableSize = started || paused;
         return (
@@ -62,6 +71,11 @@ class Game extends Component {
                 actions={actions}
                 disabled={isDefaultState}
                 style={elementContainerStyle}
+              />
+            </div>
+            <div style={rowStyle}>
+              <Errors
+                messages={errorMessages}
               />
             </div>
           </div>

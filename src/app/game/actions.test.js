@@ -57,6 +57,7 @@ describe('setBucketSize', () => {
     const action = _.last(store.getActions());
     expect(action.type).toEqual(types.SET_ERROR_MESSAGES);
     expect(action.payload.length).not.toEqual(0);
+    expect(_.isString(action.payload[0])).toBeTruthy();
   });
 
   it('Should enable game play if the target size is achievable', () => {
@@ -98,6 +99,7 @@ describe('setTargetSize', () => {
     const action = _.last(store.getActions());
     expect(action.type).toEqual(types.SET_ERROR_MESSAGES);
     expect(action.payload.length).not.toEqual(0);
+    expect(_.isString(action.payload[0])).toBeTruthy();
   });
 
   it('Should enable game play if all validation rules pass', () => {
