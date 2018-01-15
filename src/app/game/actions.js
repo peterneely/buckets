@@ -1,6 +1,14 @@
 import * as types from './types';
 import { toInt } from '_layout/format';
 
+export function pauseGame() {
+  return { type: types.PAUSE_GAME };
+}
+
+export function playGame() {
+  return { type: types.PLAY_GAME };
+}
+
 export function resetGame() {
   return { type: types.RESET_GAME };
 }

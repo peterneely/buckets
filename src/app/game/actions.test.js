@@ -2,6 +2,18 @@ import * as actionCreators from './actions';
 import * as types from './types';
 import { toInt } from '_layout/format';
 
+describe('pauseGame', () => {
+  it('Should dispatch the correct action', () => {
+    expect(actionCreators.pauseGame()).toEqual({ type: types.PAUSE_GAME });
+  });
+});
+
+describe('playGame', () => {
+  it('Should dispatch the correct action', () => {
+    expect(actionCreators.playGame()).toEqual({ type: types.PLAY_GAME });
+  });
+});
+
 describe('resetGame', () => {
   it('Should dispatch the correct action', () => {
     expect(actionCreators.resetGame()).toEqual({ type: types.RESET_GAME });

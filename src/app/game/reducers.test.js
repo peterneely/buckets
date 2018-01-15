@@ -2,6 +2,16 @@ import * as types from './types';
 import initialState from './initialState';
 import reduce from './reducers';
 
+it('Pauses the game correctly', () => {
+  const action = { type: types.PAUSE_GAME };
+  expect(reduce({}, action)).toEqual({ paused: true, playing: false });
+});
+
+it('Plays the game correctly', () => {
+  const action = { type: types.PLAY_GAME };
+  expect(reduce({}, action)).toEqual({ playing: true });
+});
+
 it('Resets game correctly', () => {
   const action = { type: types.RESET_GAME };
   expect(reduce({}, action)).toEqual(initialState);
