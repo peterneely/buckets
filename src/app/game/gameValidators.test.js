@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { nonPlayableState, playableState } from './fakeStates';
+import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStates';
 import { validators } from './gameValidators';
 
 const getValidator = id => validators.find(validator => validator.id == id);
@@ -35,6 +35,22 @@ describe('oddTargetEvenBuckets', () => {
 
   it('Should return true when the state is valid', () => {
     const getState = () => playableState;
+    expect(validator.isValid(getState).valid).toBeTruthy();
+  });
+});
+
+describe('targetTooBig', () => {
+  const validator = getValidator('targetTooBig');
+
+  it('Should return false when the state is not valid', () => {
+    const getState = () => mergeIntoInitialState(() => ({ target: 6 }));
+    expect(validator.isValid(getState).valid).toBeFalsy();
+  });
+
+  it('Should return true when the state is valid', () => {
+    let getState = () => playableState;
+    expect(validator.isValid(getState).valid).toBeTruthy();
+    getState = () => mergeIntoInitialState(() => ({ target: 5 }));
     expect(validator.isValid(getState).valid).toBeTruthy();
   });
 });

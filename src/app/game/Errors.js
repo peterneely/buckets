@@ -8,9 +8,9 @@ class Errors extends Component {
     const { errors: { backgroundColor, color } } = colors;
     const { transition } = animations;
     return {
-      contentStyle: { backgroundColor, padding: 20, width: 275 },
+      contentStyle: { backgroundColor, padding: 20, width: 290 },
       getContainerStyle: ({ show }) => ({ height: show ? 'inherit' : 0, opacity: show ? 1 : 0, transition }),
-      textStyle: { color, margin: '5px 5px 10px' },
+      textStyle: { color, margin: 0, padding: '5px 8px 10px' },
     };
   })();
 
