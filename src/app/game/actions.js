@@ -1,6 +1,7 @@
 import * as types from './types';
 import { toInt } from '_layout/format';
 import { validators } from './gameValidators';
+import { transferBuckets } from './buckets';
 
 export function pauseGame() {
   return { type: types.PAUSE_GAME };
@@ -67,21 +68,15 @@ export function transfer() {
   return (dispatch, getState) => {
     const { game: { buckets, steps: { log } } } = getState();
     const { big, small } = buckets;
-    const {
-      [big]: { value: bigValue },
-      [small]: { size: smallSize, value: smallValue },
-    } = buckets;
-    // const newSmallValue = (smallValue + bigValue) < smallSize ? smallValue + bigValue : 
+    const { [big]: bigBucket, [small]: smallBucket } = buckets;
+    const { bucket1: newBigBucket, bucket2: newSmallBucket } = transferBuckets(bigBucket, smallBucket);
     const newLog = [...log];
-    newLog.push({ [small]: smallSize, [big]: bigValue });
+    newLog.push({ [small]: newSmallBucket.value, [big]: newBigBucket.value });
     const payload = {
-      buckets: {
-        [big]: { value: bigValue },
-        [small]: { value: smallValue },
-      },
+      buckets: { [big]: newBigBucket, [small]: newSmallBucket },
       steps: { log: newLog },
     };
-    dispatch({ type: types.FILL, payload });
+    dispatch({ type: types.TRANSFER, payload });
     dispatch(setNextStep(''));
   };
 }

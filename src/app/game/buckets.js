@@ -1,4 +1,4 @@
-export function transfer(bucket1, bucket2) {
+export function transferBuckets(bucket1, bucket2) {
   const { value: value1 } = bucket1;
   const { size: size2, value: value2 } = bucket2;
   const space2 = size2 - value2;

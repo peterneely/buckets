@@ -1,8 +1,8 @@
-import { transfer } from './buckets';
+import { transferBuckets } from './buckets';
 
 describe('Transfer', () => {
   it('Should accept two buckets', () => {
-    expect(transfer.length).toEqual(2);
+    expect(transferBuckets.length).toEqual(2);
   });
 
   describe('Buckets are the same size', () => {
@@ -70,7 +70,7 @@ describe('Transfer', () => {
         },
       ];
       scenarios.forEach(({ given, expected }) => {
-        const actual = transfer(given.bucket1, given.bucket2);
+        const actual = transferBuckets(given.bucket1, given.bucket2);
         expect(actual.bucket1.value).toEqual(expected.bucket1.value);
         expect(actual.bucket2.value).toEqual(expected.bucket2.value);
       });
@@ -142,7 +142,7 @@ describe('Transfer', () => {
         },
       ];
       scenarios.forEach(({ given, expected }) => {
-        const actual = transfer(given.bucket1, given.bucket2);
+        const actual = transferBuckets(given.bucket1, given.bucket2);
         expect(actual.bucket1.value).toEqual(expected.bucket1.value);
         expect(actual.bucket2.value).toEqual(expected.bucket2.value);
       });
@@ -204,7 +204,7 @@ describe('Transfer', () => {
         },
       ];
       scenarios.forEach(({ given, expected }) => {
-        const actual = transfer(given.bucket1, given.bucket2);
+        const actual = transferBuckets(given.bucket1, given.bucket2);
         expect(actual.bucket1.value).toEqual(expected.bucket1.value);
         expect(actual.bucket2.value).toEqual(expected.bucket2.value);
       });
