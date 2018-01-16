@@ -10,7 +10,7 @@ describe('Steps', () => {
   let actions;
 
   beforeEach(() => {
-    actions = { startStepping: jest.fn() };
+    actions = { stepStart: jest.fn() };
   });
 
   describe('Start/stop', () => {
@@ -71,7 +71,7 @@ describe('Steps', () => {
     it('Should dispatch the correct action when stepping starts', () => {
       const steps = shallow(<Steps actions={actions} steps={{}} />);
       steps.setProps({ started: true });
-      expect(actions.startStepping).toHaveBeenCalled();
+      expect(actions.stepStart).toHaveBeenCalled();
     });
   });
 });

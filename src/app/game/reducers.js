@@ -9,6 +9,8 @@ export default function reduce(state = initialState, action) {
       return { ...state, play: { ...state.play, disabled: payload } };
     case types.FILL:
       return _.merge({}, state, payload);
+    case types.INITIALIZE_STEPS_LOG:
+      return { ...state, steps: { ...state.steps, ...payload } };
     case types.PAUSE_GAME:
       return { ...state, play: { ...state.play, paused: true } };
     case types.RESET_GAME:
@@ -25,8 +27,6 @@ export default function reduce(state = initialState, action) {
       return { ...state, target: payload };
     case types.START_GAME:
       return { ...state, play: { ...state.play, paused: false, started: true } };
-    case types.START_STEPPING:
-      return { ...state, steps: { ...state.steps, ...payload } };
     default:
       return state;
   }

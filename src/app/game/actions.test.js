@@ -111,47 +111,37 @@ describe('setTargetSize', () => {
 });
 
 describe('Stepping', () => {
+  beforeEach(jest.useFakeTimers);
+
   it('Should be able to start stepping', () => {
     const store = configureStore([thunk])(playableState);
-    store.dispatch(actionCreators.startStepping());
+    store.dispatch(actionCreators.stepStart());
     const actions = store.getActions();
     expect(actions.length).toEqual(2);
     expect(actions[0]).toEqual({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } });
-    expect(_.last(actions)).toEqual({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }], next: 'fill' } });
+    expect(actions[1]).toEqual({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
+    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
   it('Should be able to fill the big bucket when it is on the right', () => {
-    jest.useFakeTimers();
     const store = configureStore([thunk])(playableState);
-    store.dispatch(actionCreators.fill());
+    store.dispatch(actionCreators.stepFill());
     const expectedPayload = {
-      buckets: {
-        right: { value: 5 },
-      },
-      steps: {
-        log: [{ left: 0, right: 5 }],
-        next: 'transfer',
-      },
+      buckets: { right: { value: 5 } },
+      steps: { log: [{ left: 0, right: 5 }] },
     };
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    // expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
   it('Should be able to fill the big bucket when it is on the left', () => {
-    jest.useFakeTimers();
     const store = configureStore([thunk])(altPlayableState);
-    store.dispatch(actionCreators.fill());
+    store.dispatch(actionCreators.stepFill());
     const expectedPayload = {
-      buckets: {
-        left: { value: 5 },
-      },
-      steps: {
-        log: [{ left: 5, right: 0 }],
-        next: 'transfer',
-      },
+      buckets: { left: { value: 5 } },
+      steps: { log: [{ left: 5, right: 0 }] },
     };
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-    // expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
-    // expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 });

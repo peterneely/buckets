@@ -2,22 +2,6 @@ import * as types from './types';
 import { toInt } from '_layout/format';
 import { validators } from './gameValidators';
 
-export function fill() {
-  return (dispatch, getState) => {
-    const { game: { buckets, steps: { log } } } = getState();
-    const { big, small } = buckets;
-    const { [big]: { size: bigSize }, [small]: { value: smallValue } } = buckets;
-    const newLog = [...log];
-    newLog.push({ [small]: smallValue, [big]: bigSize });
-    const payload = {
-      buckets: { [big]: { value: bigSize } },
-      steps: { log: newLog },
-    };
-    dispatch({ type: types.FILL, payload });
-    dispatch(setNextStep('transfer'));
-  };
-}
-
 export function pauseGame() {
   return { type: types.PAUSE_GAME };
 }
@@ -50,20 +34,36 @@ export function startGame() {
   return { type: types.START_GAME };
 }
 
-export function startStepping() {
+export function stepFill() {
+  return (dispatch, getState) => {
+    const { game: { buckets, steps: { log } } } = getState();
+    const { big, small } = buckets;
+    const { [big]: { size: bigSize }, [small]: { value: smallValue } } = buckets;
+    const newLog = [...log];
+    newLog.push({ [small]: smallValue, [big]: bigSize });
+    const payload = {
+      buckets: { [big]: { value: bigSize } },
+      steps: { log: newLog },
+    };
+    dispatch({ type: types.FILL, payload });
+    dispatch(setNextStep('stepTransfer'));
+  };
+}
+
+export function stepStart() {
   return (dispatch, getState) => {
     const { game: { buckets: { left, right } } } = getState();
     const big = left.size > right.size ? 'left' : 'right';
     const small = big === 'left' ? 'right' : 'left';
     dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
-    dispatch({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }] } });
-    dispatch(setNextStep('fill'));
+    dispatch({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
+    dispatch(setNextStep('stepFill'));
   };
 }
 
-export function transfer() {
+export function stepTransfer() {
   return dispatch => {
-    console.log('transfer');
+    console.log('stepTransfer');
     dispatch({ type: types.NO_ACTION });
   };
 }

@@ -18,6 +18,7 @@ class Steps extends Component {
 
   stepper = (() => {
     const { actions } = this.props;
+    const start = nextStep => nextStep ? actions[nextStep]() : actions.stepStart();
     return {
       tryStep: ({ paused, reset, started, steps: { next: nextStep } }) => {
         const { paused: prevPaused, reset: prevReset, steps: { next: prevStep } } = this.props;
@@ -26,9 +27,7 @@ class Steps extends Component {
         const shouldPause = stepping && paused && paused !== prevPaused;
         const shouldReset = stepping && reset && reset !== prevReset;
         const shouldStep = stepping && nextStep && nextStep !== prevStep;
-        if (shouldStart) this.setState({ stepping: true }, () => {
-          nextStep ? actions[nextStep]() : actions.startStepping();
-        });
+        if (shouldStart) this.setState({ stepping: true }, () => start(nextStep));
         else if (shouldPause || shouldReset) this.setState({ stepping: false });
         else if (shouldStep) actions[nextStep]();
       },
