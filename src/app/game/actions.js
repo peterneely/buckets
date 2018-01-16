@@ -34,6 +34,10 @@ export function startGame() {
   return { type: types.START_GAME };
 }
 
+export function startStepping() {
+  return { type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] };
+}
+
 function setSize({ size, ifValid }) {
   const sizeInt = toInt(size);
   const isValid = size >= 1 && sizeInt == size;

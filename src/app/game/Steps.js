@@ -10,8 +10,11 @@ import {
 } from 'material-ui/Table';
 
 class Steps extends Component {
+  state = { stepping: false };
+
   componentWillReceiveProps(nextProps) {
     this.stepper.tryPause(nextProps);
+    this.stepper.tryReset(nextProps);
     this.stepper.tryStart(nextProps);
   }
 
@@ -20,18 +23,24 @@ class Steps extends Component {
   };
 
   stepper = (() => {
+    const { actions: { startStepping } } = this.props;
     const pause = () => {
-      console.log('stepper pause');
+      this.setState({ stepping: false });
     };
     const start = () => {
-      console.log('stepper start');
+      this.setState({ stepping: true });
+      startStepping();
     };
+    const stop = () => this.setState({ stepping: false });
     return {
       tryPause: ({ paused }) => {
-        if (paused && paused !== this.props.paused) pause();
+        if (paused && paused !== this.props.paused && this.state.stepping) pause();
+      },
+      tryReset: ({ reset }) => {
+        if (reset && reset !== this.props.reset && this.state.stepping) stop();
       },
       tryStart: ({ paused, started }) => {
-        if (started && !paused) start();
+        if (started && !paused && !this.state.stepping) start();
       },
     };
   })();
@@ -50,7 +59,7 @@ class Steps extends Component {
                   <TableHeaderColumn>{'Right'}</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody displayRowCheckbox={false}>
                 {steps.map((step, index) => (
                   <TableRow key={index} striped>
                     <TableRowColumn>{step.left}</TableRowColumn>
@@ -73,6 +82,7 @@ class Steps extends Component {
 Steps.propTypes = {
   actions: PropTypes.object.isRequired,
   paused: PropTypes.bool,
+  reset: PropTypes.bool,
   started: PropTypes.bool,
   steps: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

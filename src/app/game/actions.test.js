@@ -109,3 +109,9 @@ describe('setTargetSize', () => {
     expect(_.last(store.getActions())).toEqual({ type: types.SET_ERROR_MESSAGES, payload: [] });
   });
 });
+
+describe('Stepping', () => {
+  it('Should be able to start stepping', () => {
+    expect(actionCreators.startStepping()).toEqual({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
+  });
+});

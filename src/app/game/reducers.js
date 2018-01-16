@@ -18,6 +18,8 @@ export default function reduce(state = initialState, action) {
       return { ...state, target: payload };
     case types.START_GAME:
       return { ...state, play: { ...state.play, paused: false, started: true } };
+    case types.START_STEPPING:
+      return { ...state, steps: payload };
     default:
       return state;
   }
