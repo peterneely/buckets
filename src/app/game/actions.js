@@ -11,9 +11,10 @@ export function fill() {
     newLog.push({ [small]: smallValue, [big]: bigSize });
     const payload = {
       buckets: { [big]: { value: bigSize } },
-      steps: { log: newLog, next: 'transfer' },
+      steps: { log: newLog },
     };
     dispatch({ type: types.FILL, payload });
+    dispatch(setNextStep('transfer'));
   };
 }
 
@@ -55,12 +56,24 @@ export function startStepping() {
     const big = left.size > right.size ? 'left' : 'right';
     const small = big === 'left' ? 'right' : 'left';
     dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
-    dispatch({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }], next: 'fill' } });
+    dispatch({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }] } });
+    dispatch(setNextStep('fill'));
   };
 }
 
 export function transfer() {
-  return { type: types.NO_ACTION };
+  return dispatch => {
+    console.log('transfer');
+    dispatch({ type: types.NO_ACTION });
+  };
+}
+
+function setNextStep(step) {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch({ type: types.SET_NEXT_STEP, payload: step });
+    }, 1500);
+  };
 }
 
 function setSize({ size, ifValid }) {

@@ -19,6 +19,8 @@ export default function reduce(state = initialState, action) {
       return { ...state, buckets: { ...state.buckets, [payload.bucketId]: { ...state.buckets[payload.bucketId], size: payload.size } } };
     case types.SET_ERROR_MESSAGES:
       return { ...state, errorMessages: payload };
+    case types.SET_NEXT_STEP:
+      return { ...state, steps: { ...state.steps, next: payload } };
     case types.SET_TARGET_SIZE:
       return { ...state, target: payload };
     case types.START_GAME:

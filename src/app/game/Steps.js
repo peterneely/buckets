@@ -26,7 +26,9 @@ class Steps extends Component {
         const shouldPause = stepping && paused && paused !== prevPaused;
         const shouldReset = stepping && reset && reset !== prevReset;
         const shouldStep = stepping && nextStep && nextStep !== prevStep;
-        if (shouldStart) this.setState({ stepping: true }, actions.startStepping);
+        if (shouldStart) this.setState({ stepping: true }, () => {
+          nextStep ? actions[nextStep]() : actions.startStepping();
+        });
         else if (shouldPause || shouldReset) this.setState({ stepping: false });
         else if (shouldStep) actions[nextStep]();
       },

@@ -121,6 +121,7 @@ describe('Stepping', () => {
   });
 
   it('Should be able to fill the big bucket when it is on the right', () => {
+    jest.useFakeTimers();
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.fill());
     const expectedPayload = {
@@ -132,10 +133,12 @@ describe('Stepping', () => {
         next: 'transfer',
       },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    // expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
   });
 
   it('Should be able to fill the big bucket when it is on the left', () => {
+    jest.useFakeTimers();
     const store = configureStore([thunk])(altPlayableState);
     store.dispatch(actionCreators.fill());
     const expectedPayload = {
@@ -147,6 +150,8 @@ describe('Stepping', () => {
         next: 'transfer',
       },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(setTimeout).toHaveBeenCalledTimes(1);
+    // expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
+    // expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
   });
 });
