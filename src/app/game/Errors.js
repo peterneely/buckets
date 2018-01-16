@@ -9,7 +9,7 @@ class Errors extends Component {
     const { transition } = animations;
     return {
       contentStyle: { backgroundColor, padding: 20, width: 290 },
-      getContainerStyle: ({ show }) => ({ height: show ? 'inherit' : 0, opacity: show ? 1 : 0, transition }),
+      getContainerStyle: ({ show }) => ({ height: show ? 'inherit' : 0, marginBottom: 25, opacity: show ? 1 : 0, transition }),
       textStyle: { color, margin: 0, padding: '5px 8px 10px' },
     };
   })();

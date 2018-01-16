@@ -6,11 +6,11 @@ export default {
     small: 'left',
   },
   errorMessages: [],
-  log: [],
   play: {
     disabled: false,
     paused: false,
     started: false,
   },
+  steps: [],
   target: 4,
 };

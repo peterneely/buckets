@@ -8,6 +8,7 @@ import Bucket from './Bucket';
 import Errors from './Errors';
 import PlayPause from './PlayPause';
 import Reset from './Reset';
+import Steps from './Steps';
 import Target from './Target';
 import initialState from './initialState';
 
@@ -32,7 +33,7 @@ class Game extends Component {
     return {
       render: () => {
         const { game } = this.props;
-        const { buckets: { left, right }, errorMessages, play: { disabled, paused, started }, target } = game;
+        const { buckets: { left, right }, errorMessages, play: { disabled, paused, started }, steps, target } = game;
         const disableInput = started || paused;
         return (
           <div style={containerStyle}>
@@ -77,9 +78,10 @@ class Game extends Component {
               />
             </div>
             <div style={rowStyle}>
-              <Errors
-                messages={errorMessages}
-              />
+              <Errors messages={errorMessages} />
+            </div>
+            <div style={rowStyle}>
+              <Steps actions={actions} steps={steps} />
             </div>
           </div>
         );
