@@ -4,10 +4,10 @@ import configureStore from 'redux-mock-store';
 import Game from './Game';
 import TextField from 'material-ui/TextField';
 import Target from './Target';
-import { mergeIntoInitialState } from './fakeStates';
+import { mergeIntoInitialState } from './fakeStoreStates';
 
 const createTargetWhen = state => {
-  const storeState = mergeIntoInitialState(() => ({ play: { ...state } }));
+  const storeState = mergeIntoInitialState({ play: { ...state } });
   const store = configureStore()(storeState);
   const game = shallow(<Game />, { context: { store } }).dive();
   return game.find(Target);

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { penultimate, toInt } from '_layout/format';
-import { nonPlayableState, playableState } from './fakeStates';
+import { nonPlayableState, playableState } from './fakeStoreStates';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {

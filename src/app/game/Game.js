@@ -81,7 +81,12 @@ class Game extends Component {
               <Errors messages={errorMessages} />
             </div>
             <div style={rowStyle}>
-              <Steps actions={actions} steps={steps} />
+              <Steps
+                actions={actions}
+                paused={paused}
+                started={started}
+                steps={steps}
+              />
             </div>
           </div>
         );

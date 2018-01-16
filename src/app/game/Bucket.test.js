@@ -5,7 +5,7 @@ import Bucket from './Bucket';
 import Game from './Game';
 import TextField from 'material-ui/TextField';
 import initialState from './initialState';
-import { mergeIntoInitialState } from './fakeStates';
+import { mergeIntoInitialState } from './fakeStoreStates';
 
 const createBucket = ({ bucketId, actions }) => {
   const { buckets: { [bucketId]: { size, value } } } = initialState;
@@ -13,7 +13,7 @@ const createBucket = ({ bucketId, actions }) => {
 };
 
 const createBucketsWhen = state => {
-  const storeState = mergeIntoInitialState(() => ({ play: { ...state } }));
+  const storeState = mergeIntoInitialState({ play: { ...state } });
   const store = configureStore()(storeState);
   const game = shallow(<Game />, { context: { store } }).dive();
   return game.find(Bucket);

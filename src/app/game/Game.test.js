@@ -6,7 +6,7 @@ import Game from './Game';
 import PlayPause from './PlayPause';
 import Reset from './Reset';
 import Target from './Target';
-import { playableState } from './fakeStates';
+import { playableState } from './fakeStoreStates';
 
 describe('Game', () => {
   describe('Layout', () => {

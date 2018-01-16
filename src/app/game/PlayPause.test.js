@@ -5,18 +5,18 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import * as types from './types';
 import Game from './Game';
 import PlayPause from './PlayPause';
-import { mergeIntoInitialState, playableState } from './fakeStates';
+import { mergeIntoInitialState, playableState } from './fakeStoreStates';
 
 describe('Reset', () => {
   it('Should disable the play/pause button when the game state is not playable', () => {
-    const state = mergeIntoInitialState(() => ({ play: { disabled: true } }));
+    const state = mergeIntoInitialState({ play: { disabled: true } });
     const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeTruthy();
   });
 
   it('Should enable the play/pause button when the game state is not the same as the initial game state', () => {
-    const state = mergeIntoInitialState(initial => ({ target: initial.target + 1 }));
+    const state = mergeIntoInitialState(initialState => ({ target: initialState.target + 1 }));
     const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     expect(game.find(PlayPause).props().disabled).toBeFalsy();
@@ -41,7 +41,7 @@ describe('Reset', () => {
   });
 
   it('Should dispatch the correct action when Pause is pressed', () => {
-    const state = mergeIntoInitialState(() => ({ play: { started: true } }));
+    const state = mergeIntoInitialState({ play: { started: true } });
     const store = configureStore()(state);
     const game = shallow(<Game />, { context: { store } }).dive();
     game.find(PlayPause).dive().find(FloatingActionButton).simulate('click');
