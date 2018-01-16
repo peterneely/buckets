@@ -11,6 +11,9 @@ export default {
     paused: false,
     started: false,
   },
-  steps: [],
+  steps: {
+    log: [],
+    next: '',
+  },
   target: 4,
 };

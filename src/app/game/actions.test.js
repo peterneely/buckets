@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { penultimate, toInt } from '_layout/format';
-import { nonPlayableState, playableState } from './fakeStoreStates';
+import { altPlayableState, nonPlayableState, playableState } from './fakeStoreStates';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {
@@ -117,6 +117,36 @@ describe('Stepping', () => {
     const actions = store.getActions();
     expect(actions.length).toEqual(2);
     expect(actions[0]).toEqual({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } });
-    expect(_.last(actions)).toEqual({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
+    expect(_.last(actions)).toEqual({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }], next: 'fill' } });
+  });
+
+  it('Should be able to fill the big bucket when it is on the right', () => {
+    const store = configureStore([thunk])(playableState);
+    store.dispatch(actionCreators.fill());
+    const expectedPayload = {
+      buckets: {
+        right: { value: 5 },
+      },
+      steps: {
+        log: [{ left: 0, right: 5 }],
+        next: 'transfer',
+      },
+    };
+    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+  });
+
+  it('Should be able to fill the big bucket when it is on the left', () => {
+    const store = configureStore([thunk])(altPlayableState);
+    store.dispatch(actionCreators.fill());
+    const expectedPayload = {
+      buckets: {
+        left: { value: 5 },
+      },
+      steps: {
+        log: [{ left: 5, right: 0 }],
+        next: 'transfer',
+      },
+    };
+    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
   });
 });

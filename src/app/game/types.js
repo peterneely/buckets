@@ -1,4 +1,5 @@
 export const DISABLE_GAME = 'DISABLE_GAME';
+export const FILL = 'FILL';
 export const NO_ACTION = 'NO_ACTION';
 export const PAUSE_GAME = 'PAUSE_GAME';
 export const RESET_GAME = 'RESET_GAME';

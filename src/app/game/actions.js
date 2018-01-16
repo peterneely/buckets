@@ -2,6 +2,21 @@ import * as types from './types';
 import { toInt } from '_layout/format';
 import { validators } from './gameValidators';
 
+export function fill() {
+  return (dispatch, getState) => {
+    const { game: { buckets, steps: { log } } } = getState();
+    const { big, small } = buckets;
+    const { [big]: { size: bigSize }, [small]: { value: smallValue } } = buckets;
+    const newLog = [...log];
+    newLog.push({ [small]: smallValue, [big]: bigSize });
+    const payload = {
+      buckets: { [big]: { value: bigSize } },
+      steps: { log: newLog, next: 'transfer' },
+    };
+    dispatch({ type: types.FILL, payload });
+  };
+}
+
 export function pauseGame() {
   return { type: types.PAUSE_GAME };
 }
@@ -40,8 +55,12 @@ export function startStepping() {
     const big = left.size > right.size ? 'left' : 'right';
     const small = big === 'left' ? 'right' : 'left';
     dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
-    dispatch({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
+    dispatch({ type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }], next: 'fill' } });
   };
+}
+
+export function transfer() {
+  return { type: types.NO_ACTION };
 }
 
 function setSize({ size, ifValid }) {

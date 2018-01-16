@@ -13,42 +13,35 @@ class Steps extends Component {
   state = { stepping: false };
 
   componentWillReceiveProps(nextProps) {
-    const { tryPause, tryReset, tryStart } = this.stepper;
-    [tryPause, tryReset, tryStart].forEach(tryAction => tryAction(nextProps));
+    this.stepper.tryStep(nextProps);
   }
+
+  stepper = (() => {
+    const { actions } = this.props;
+    return {
+      tryStep: ({ paused, reset, started, steps: { next: nextStep } }) => {
+        const { paused: prevPaused, reset: prevReset, steps: { next: prevStep } } = this.props;
+        const { stepping } = this.state;
+        const shouldStart = !stepping && started && !paused;
+        const shouldPause = stepping && paused && paused !== prevPaused;
+        const shouldReset = stepping && reset && reset !== prevReset;
+        const shouldStep = stepping && nextStep && nextStep !== prevStep;
+        if (shouldStart) this.setState({ stepping: true }, actions.startStepping);
+        else if (shouldPause || shouldReset) this.setState({ stepping: false });
+        else if (shouldStep) actions[nextStep]();
+      },
+    };
+  })();
 
   styles = {
     containerStyle: { width: 300 },
   };
 
-  stepper = (() => {
-    const { actions: { startStepping } } = this.props;
-    const pause = () => {
-      this.setState({ stepping: false });
-    };
-    const start = () => {
-      this.setState({ stepping: true });
-      startStepping();
-    };
-    const stop = () => this.setState({ stepping: false });
-    return {
-      tryPause: ({ paused }) => {
-        if (paused && paused !== this.props.paused && this.state.stepping) pause();
-      },
-      tryReset: ({ reset }) => {
-        if (reset && reset !== this.props.reset && this.state.stepping) stop();
-      },
-      tryStart: ({ paused, started }) => {
-        if (started && !paused && !this.state.stepping) start();
-      },
-    };
-  })();
-
   steps = (styles => {
     const { containerStyle } = styles;
     return {
       render: () => {
-        const { steps } = this.props;
+        const { steps: { log = [] } } = this.props;
         return (
           <div style={containerStyle}>
             <Table fixedHeader height="400">
@@ -59,7 +52,7 @@ class Steps extends Component {
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={false}>
-                {steps.map((step, index) => (
+                {log.map((step, index) => (
                   <TableRow key={index} striped>
                     <TableRowColumn>{step.left}</TableRowColumn>
                     <TableRowColumn>{step.right}</TableRowColumn>
@@ -83,7 +76,7 @@ Steps.propTypes = {
   paused: PropTypes.bool,
   reset: PropTypes.bool,
   started: PropTypes.bool,
-  steps: PropTypes.arrayOf(PropTypes.object).isRequired,
+  steps: PropTypes.object.isRequired,
 };
 
 export default Steps;

@@ -54,13 +54,45 @@ describe('Game play', () => {
   });
 
   it('Starts stepping correctly', () => {
-    const action = { type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] };
-    expect(reduce({}, action)).toEqual({ steps: [{ left: 0, right: 0 }] });
+    let action = { type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } };
+    expect(reduce({}, action)).toEqual({ buckets: { big: 'right', small: 'left' } });
+    action = { type: types.START_STEPPING, payload: { log: [{ left: 0, right: 0 }], next: 'fill' } };
+    expect(reduce({}, action)).toEqual({ steps: { log: [{ left: 0, right: 0 }], next: 'fill' } });
   });
 
   it('Resets game correctly', () => {
     const action = { type: types.RESET_GAME };
     expect(reduce({}, action)).toEqual(initialState);
+  });
+});
+
+describe('Game steps', () => {
+  it('Should fill the big bucket correctly when it is on the right', () => {
+    const payload = {
+      buckets: {
+        right: { value: 5 },
+      },
+      steps: {
+        log: [{ left: 0, right: 5 }],
+        next: 'transfer',
+      },
+    };
+    const action = { type: types.FILL, payload };
+    expect(reduce({}, action)).toEqual(payload);
+  });
+
+  it('Should fill the big bucket correctly when it is on the left', () => {
+    const payload = {
+      buckets: {
+        left: { value: 5 },
+      },
+      steps: {
+        log: [{ left: 5, right: 0 }],
+        next: 'transfer',
+      },
+    };
+    const action = { type: types.FILL, payload };
+    expect(reduce({}, action)).toEqual(payload);
   });
 });
 
