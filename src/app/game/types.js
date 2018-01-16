@@ -10,3 +10,4 @@ export const SET_ERROR_MESSAGES = 'SET_ERROR_MESSAGES';
 export const SET_NEXT_STEP = 'SET_NEXT_STEP';
 export const SET_TARGET_SIZE = 'SET_TARGET_SIZE';
 export const START_GAME = 'START_GAME';
+export const TRANSFER = 'TRANSFER';

@@ -34,7 +34,20 @@ export function startGame() {
   return { type: types.START_GAME };
 }
 
-export function stepFill() {
+// Steps:
+
+export function startSteps() {
+  return (dispatch, getState) => {
+    const { game: { buckets: { left, right } } } = getState();
+    const big = left.size > right.size ? 'left' : 'right';
+    const small = big === 'left' ? 'right' : 'left';
+    dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
+    dispatch({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
+    dispatch(setNextStep('fill'));
+  };
+}
+
+export function fill() {
   return (dispatch, getState) => {
     const { game: { buckets, steps: { log } } } = getState();
     const { big, small } = buckets;
@@ -46,33 +59,36 @@ export function stepFill() {
       steps: { log: newLog },
     };
     dispatch({ type: types.FILL, payload });
-    dispatch(setNextStep('stepTransfer'));
+    dispatch(setNextStep('transfer'));
   };
 }
 
-export function stepStart() {
+export function transfer() {
   return (dispatch, getState) => {
-    const { game: { buckets: { left, right } } } = getState();
-    const big = left.size > right.size ? 'left' : 'right';
-    const small = big === 'left' ? 'right' : 'left';
-    dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
-    dispatch({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
-    dispatch(setNextStep('stepFill'));
-  };
-}
-
-export function stepTransfer() {
-  return dispatch => {
-    console.log('stepTransfer');
-    dispatch({ type: types.NO_ACTION });
+    const { game: { buckets, steps: { log } } } = getState();
+    const { big, small } = buckets;
+    const {
+      [big]: { value: bigValue },
+      [small]: { size: smallSize, value: smallValue },
+    } = buckets;
+    // const newSmallValue = (smallValue + bigValue) < smallSize ? smallValue + bigValue : 
+    const newLog = [...log];
+    newLog.push({ [small]: smallSize, [big]: bigValue });
+    const payload = {
+      buckets: {
+        [big]: { value: bigValue },
+        [small]: { value: smallValue },
+      },
+      steps: { log: newLog },
+    };
+    dispatch({ type: types.FILL, payload });
+    dispatch(setNextStep(''));
   };
 }
 
 function setNextStep(step) {
   return dispatch => {
-    setTimeout(() => {
-      dispatch({ type: types.SET_NEXT_STEP, payload: step });
-    }, 1500);
+    setTimeout(() => dispatch({ type: types.SET_NEXT_STEP, payload: step }), 1500);
   };
 }
 

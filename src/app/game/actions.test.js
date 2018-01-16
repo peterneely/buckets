@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { penultimate, toInt } from '_layout/format';
-import { altPlayableState, nonPlayableState, playableState } from './fakeStoreStates';
+import { nonPlayableState, playableState } from './fakeStoreStates';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {
@@ -115,7 +115,7 @@ describe('Stepping', () => {
 
   it('Should be able to start stepping', () => {
     const store = configureStore([thunk])(playableState);
-    store.dispatch(actionCreators.stepStart());
+    store.dispatch(actionCreators.startSteps());
     const actions = store.getActions();
     expect(actions.length).toEqual(2);
     expect(actions[0]).toEqual({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } });
@@ -123,9 +123,9 @@ describe('Stepping', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
-  it('Should be able to fill the big bucket when it is on the right', () => {
+  it('Should be able to fill the big bucket', () => {
     const store = configureStore([thunk])(playableState);
-    store.dispatch(actionCreators.stepFill());
+    store.dispatch(actionCreators.fill());
     const expectedPayload = {
       buckets: { right: { value: 5 } },
       steps: { log: [{ left: 0, right: 5 }] },
@@ -134,14 +134,14 @@ describe('Stepping', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
-  it('Should be able to fill the big bucket when it is on the left', () => {
-    const store = configureStore([thunk])(altPlayableState);
-    store.dispatch(actionCreators.stepFill());
+  xit('Should be able to transfer the big bucket to the little bucket', () => {
+    const store = configureStore([thunk])(playableState);
+    store.dispatch(actionCreators.transfer());
     const expectedPayload = {
-      buckets: { left: { value: 5 } },
-      steps: { log: [{ left: 5, right: 0 }] },
+      buckets: { left: { value: 3 } },
+      steps: { log: [{ left: 3, right: 2 }] },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(store.getActions()[0]).toEqual({ type: types.TRANSFER, payload: expectedPayload });
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 });

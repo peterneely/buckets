@@ -72,19 +72,10 @@ describe('Game steps', () => {
     expect(reduce({}, action)).toEqual({ steps: { next: 'any' } });
   });
 
-  it('Should fill the big bucket correctly when it is on the right', () => {
+  it('Should fill the big bucket correctly', () => {
     const payload = {
       buckets: { right: { value: 5 } },
       steps: { log: [{ left: 0, right: 5 }] },
-    };
-    const action = { type: types.FILL, payload };
-    expect(reduce({}, action)).toEqual(payload);
-  });
-
-  it('Should fill the big bucket correctly when it is on the left', () => {
-    const payload = {
-      buckets: { left: { value: 5 } },
-      steps: { log: [{ left: 5, right: 0 }] },
     };
     const action = { type: types.FILL, payload };
     expect(reduce({}, action)).toEqual(payload);

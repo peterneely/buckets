@@ -7,8 +7,6 @@ export const nonPlayableState = mergeIntoInitialState({ buckets: { left: { size:
 
 export const playableState = addStoreKey(initialState);
 
-export const altPlayableState = mergeIntoInitialState({ buckets: { big: 'left', left: { size: 5 }, right: { size: 3 }, small: 'right' } });
-
 function addStoreKey(state) {
   return { game: { ...state } };
 }
