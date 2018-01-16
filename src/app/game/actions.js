@@ -35,7 +35,13 @@ export function startGame() {
 }
 
 export function startStepping() {
-  return { type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] };
+  return (dispatch, getState) => {
+    const { game: { buckets: { left, right } } } = getState();
+    const big = left.size > right.size ? 'left' : 'right';
+    const small = big === 'left' ? 'right' : 'left';
+    dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
+    dispatch({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
+  };
 }
 
 function setSize({ size, ifValid }) {

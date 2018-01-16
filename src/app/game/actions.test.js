@@ -112,6 +112,11 @@ describe('setTargetSize', () => {
 
 describe('Stepping', () => {
   it('Should be able to start stepping', () => {
-    expect(actionCreators.startStepping()).toEqual({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
+    const store = configureStore([thunk])(playableState);
+    store.dispatch(actionCreators.startStepping());
+    const actions = store.getActions();
+    expect(actions.length).toEqual(2);
+    expect(actions[0]).toEqual({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } });
+    expect(_.last(actions)).toEqual({ type: types.START_STEPPING, payload: [{ left: 0, right: 0 }] });
   });
 });

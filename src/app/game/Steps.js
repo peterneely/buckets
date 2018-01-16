@@ -13,9 +13,8 @@ class Steps extends Component {
   state = { stepping: false };
 
   componentWillReceiveProps(nextProps) {
-    this.stepper.tryPause(nextProps);
-    this.stepper.tryReset(nextProps);
-    this.stepper.tryStart(nextProps);
+    const { tryPause, tryReset, tryStart } = this.stepper;
+    [tryPause, tryReset, tryStart].forEach(tryAction => tryAction(nextProps));
   }
 
   styles = {
