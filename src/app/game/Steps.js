@@ -8,6 +8,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import { animations, colors, elements } from '_app/muiTheme';
 
 class Steps extends Component {
   state = { stepping: false };
@@ -20,7 +21,7 @@ class Steps extends Component {
     const { actions } = this.props;
     const start = currentStep => currentStep ? actions[currentStep]() : actions.startSteps();
     return {
-      tryStep: ({ paused, restart, started, steps: { current: currentStep } }) => {
+      tryStep: ({ play: { started }, paused, restart, steps: { current: currentStep } }) => {
         const { paused: prevPaused, restart: prevRestart, steps: { current: prevCurrentStep } } = this.props;
         const { stepping } = this.state;
         const shouldStart = !stepping && started && !paused;
@@ -34,34 +35,53 @@ class Steps extends Component {
     };
   })();
 
-  styles = {
-    containerStyle: { width: 300 },
-  };
+  styles = (() => {
+    const { transition } = animations;
+    const { results: { backgroundColor } } = colors;
+    const { border, borderRadius } = elements;
+    return {
+      columnStyle: { fontSize: 14, textAlign: 'center' },
+      getContainerStyle: () => {
+        const { play: { leftWins, rightWins, started } } = this.props;
+        const show = started || leftWins || rightWins;
+        return {
+          border,
+          borderRadius,
+          height: show ? 'inherit' : 0,
+          opacity: show ? 1 : 0,
+          transition,
+          width: 300,
+        };
+      },
+      headerStyle: { backgroundColor },
+      tableStyle: { borderRadius },
+    };
+  })();
 
   steps = (styles => {
-    const { containerStyle } = styles;
+    const { columnStyle, getContainerStyle, headerStyle, tableStyle } = styles;
     return {
       render: () => {
         const { steps: { log = [] } } = this.props;
         return (
-          <div style={containerStyle}>
-            <Table fixedHeader height="400">
-              <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+          <div style={getContainerStyle()}>
+            <Table fixedHeader height="230px" style={tableStyle}>
+              <TableHeader adjustForCheckbox={false} displaySelectAll={false} style={headerStyle}>
                 <TableRow>
-                  <TableHeaderColumn>{'Left'}</TableHeaderColumn>
-                  <TableHeaderColumn>{'Right'}</TableHeaderColumn>
+                  <TableHeaderColumn style={columnStyle}>{'Left'}</TableHeaderColumn>
+                  <TableHeaderColumn style={columnStyle}>{'Right'}</TableHeaderColumn>
                 </TableRow>
               </TableHeader>
               <TableBody displayRowCheckbox={false}>
                 {log.map((step, index) => (
-                  <TableRow key={index} striped>
-                    <TableRowColumn>{step.left}</TableRowColumn>
-                    <TableRowColumn>{step.right}</TableRowColumn>
+                  <TableRow key={index}>
+                    <TableRowColumn style={columnStyle}>{step.left}</TableRowColumn>
+                    <TableRowColumn style={columnStyle}>{step.right}</TableRowColumn>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-          </div>
+          </div >
         );
       },
     };
@@ -75,8 +95,8 @@ class Steps extends Component {
 Steps.propTypes = {
   actions: PropTypes.object.isRequired,
   paused: PropTypes.bool,
+  play: PropTypes.object.isRequired,
   restart: PropTypes.bool,
-  started: PropTypes.bool,
   steps: PropTypes.object.isRequired,
 };
 

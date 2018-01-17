@@ -34,10 +34,11 @@ class Game extends Component {
         const {
           buckets: { left, right },
           errorMessages,
-          play: { disabled, leftWins, paused, rightWins, started },
+          play,
           steps,
           target,
         } = game;
+        const { disabled, leftWins, paused, rightWins, started } = play;
         const disableInput = started || paused;
         return (
           <div style={containerStyle}>
@@ -88,8 +89,8 @@ class Game extends Component {
               <Steps
                 actions={actions}
                 paused={paused}
-                restart={leftWins || rightWins}
-                started={started}
+                play={play}
+                restart={!started || leftWins || rightWins}
                 steps={steps}
               />
             </div>

@@ -23,12 +23,12 @@ describe('Steps', () => {
       expect(props.actions).toBeDefined();
       expect(props.paused).toBeDefined();
       expect(props.restart).toBeDefined();
-      expect(props.started).toBeDefined();
+      expect(props.play).toBeDefined();
       expect(props.steps).toBeDefined();
     });
 
     it('Should start logging steps when the game starts', () => {
-      const steps = shallow(<Steps actions={actions} steps={{}} />);
+      const steps = shallow(<Steps actions={actions} play={{ started: true }} steps={{}} />);
       const steppingState = steps.state('stepping');
       expect(steppingState).toBeDefined();
       expect(_.isBoolean(steppingState)).toBeTruthy();
@@ -38,14 +38,14 @@ describe('Steps', () => {
     });
 
     it('Should stop logging steps when the game is paused', () => {
-      const steps = shallow(<Steps actions={actions} steps={{}} />);
+      const steps = shallow(<Steps actions={actions} play={{}} steps={{}} />);
       steps.setProps({ started: true });
       steps.setProps({ paused: true });
       expect(steps.state('stepping')).toBeFalsy();
     });
 
     it('Should start and stop logging steps when the game is started and paused repeatedly', () => {
-      const steps = shallow(<Steps actions={actions} steps={{}} />);
+      const steps = shallow(<Steps actions={actions} play={{ started: true }} steps={{}} />);
       steps.setProps({ started: true });
       expect(steps.state('stepping')).toBeTruthy();
       steps.setProps({ paused: true });
@@ -58,18 +58,18 @@ describe('Steps', () => {
       expect(steps.state('stepping')).toBeTruthy();
     });
 
-    it('Should reset inner state when the game has been reset', () => {
-      const steps = shallow(<Steps actions={actions} steps={{}} />);
+    it('Should reset inner state when the game has been restarted', () => {
+      const steps = shallow(<Steps actions={actions} play={{ started: true }} steps={{}} />);
       steps.setProps({ started: true });
       expect(steps.state('stepping')).toBeTruthy();
-      steps.setProps({ reset: true });
+      steps.setProps({ restart: true });
       // expect(steps.state('stepping')).toBeFalsy(); // Not sure why this fails
     });
   });
 
   describe('Stepping', () => {
     it('Should dispatch the correct action when stepping starts', () => {
-      const steps = shallow(<Steps actions={actions} steps={{}} />);
+      const steps = shallow(<Steps actions={actions} play={{ started: true }} steps={{}} />);
       steps.setProps({ started: true });
       expect(actions.startSteps).toHaveBeenCalled();
     });
