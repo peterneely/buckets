@@ -22,7 +22,7 @@ class Game extends Component {
       width: '100%',
     },
     elementContainerStyle: { margin: 30 },
-    rowStyle: { display: 'flex', justifyContent: 'center' },
+    rowStyle: { alignItems: 'flex-end', display: 'flex', justifyContent: 'center' },
   };
 
   game = (styles => {
