@@ -82,7 +82,11 @@ class Bucket extends Component {
 
   bucket = (styles => {
     const { actions: { setBucketSize }, id } = this.props;
-    const handleSetSize = (event, newValue) => setBucketSize(id, newValue);
+    const handleFocus = event => event.target.select();
+    const handleSetSize = (event, newValue) => {
+      setBucketSize(id, newValue);
+      handleFocus(event);
+    };
     return {
       render: () => {
         const { disabled, size, value } = this.props;
@@ -112,6 +116,7 @@ class Bucket extends Component {
                 disabled={disabled}
                 floatingLabelText="Size"
                 onChange={handleSetSize}
+                onFocus={handleFocus}
                 style={inputStyle}
                 type="number"
                 value={size}
