@@ -9,20 +9,23 @@ export default function reduce(state = initialState, action) {
       return { ...state, steps: { ...state.steps, log: [] } };
     case types.DISABLE_GAME:
       return { ...state, play: { ...state.play, disabled: payload } };
+    case types.DUMP:
     case types.FILL:
     case types.START_STEPS:
     case types.TRANSFER:
       return _.merge({}, state, payload);
     case types.LEFT_WINS:
-      return { ...state, play: { ...state.play, leftWins: true, started: false }, steps: { ...state.steps, next: '' } };
+      return { ...state, play: { ...state.play, leftWins: true, started: false }, steps: { ...state.steps, current: '' } };
     case types.PAUSE_GAME:
       return { ...state, play: { ...state.play, paused: true } };
     case types.RESET_GAME:
       return { ...initialState };
     case types.RIGHT_WINS:
-      return { ...state, play: { ...state.play, rightWins: true, started: false }, steps: { ...state.steps, next: '' } };
+      return { ...state, play: { ...state.play, rightWins: true, started: false }, steps: { ...state.steps, current: '' } };
     case types.SET_BUCKET_SIZE:
       return { ...state, buckets: { ...state.buckets, [payload.bucketId]: { ...state.buckets[payload.bucketId], size: payload.size } } };
+    case types.SET_CURRENT_STEP:
+      return { ...state, steps: { ...state.steps, current: state.steps.next, next: '' } };
     case types.SET_ERROR_MESSAGES:
       return { ...state, errorMessages: payload };
     case types.SET_NEXT_STEP:

@@ -25,6 +25,20 @@ describe('Validators', () => {
   });
 });
 
+describe('bucketsHalfSize', () => {
+  const validator = getValidator('bucketsHalfSize');
+
+  it('Should return false when the state is not valid', () => {
+    const getState = () => mergeIntoInitialState({ buckets: { left: { size: 3 }, right: { size: 6 } } });
+    expect(validator.isValid(getState).valid).toBeFalsy();
+  });
+
+  it('Should return true when the state is valid', () => {
+    const getState = () => mergeIntoInitialState({ buckets: { left: { size: 3 }, right: { size: 7 } } });
+    expect(validator.isValid(getState).valid).toBeTruthy();
+  });
+});
+
 describe('bucketsSameSize', () => {
   const validator = getValidator('bucketsSameSize');
 

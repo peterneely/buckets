@@ -15,6 +15,7 @@ export default {
   },
   steps: {
     log: [],
+    current: '',
     next: '',
   },
   target: 4,

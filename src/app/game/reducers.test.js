@@ -61,6 +61,18 @@ describe('Game play', () => {
     action = { type: types.START_STEPS, payload };
     expect(reduce({}, action)).toEqual(payload);
   });
+});
+
+describe('Game steps', () => {
+  it('Should set the next step correctly', () => {
+    const action = { type: types.SET_NEXT_STEP, payload: 'any' };
+    expect(reduce({}, action)).toEqual({ steps: { next: 'any' } });
+  });
+
+  it('Should set the current step correctly', () => {
+    const action = { type: types.SET_CURRENT_STEP };
+    expect(reduce({ steps: { next: 'any' } }, action)).toEqual({ steps: { current: 'any', next: '', } });
+  });
 
   it('Fills a bucket correctly', () => {
     const payload = {
@@ -80,25 +92,18 @@ describe('Game play', () => {
     expect(reduce({}, action)).toEqual(payload);
   });
 
+  it('Dumps the small bucket correctly', () => {
+    const payload = {
+      buckets: { left: { value: 0 } },
+      steps: { log: [{ left: 0, right: 2 }] },
+    };
+    const action = { type: types.DUMP, payload };
+    expect(reduce({ buckets: { left: {} } }, action)).toEqual(payload);
+  });
+
   it('Resets game correctly', () => {
     const action = { type: types.RESET_GAME };
     expect(reduce({}, action)).toEqual(initialState);
-  });
-});
-
-describe('Game steps', () => {
-  it('Should set the next step correctly', () => {
-    const action = { type: types.SET_NEXT_STEP, payload: 'any' };
-    expect(reduce({}, action)).toEqual({ steps: { next: 'any' } });
-  });
-
-  it('Should fill the big bucket correctly', () => {
-    const payload = {
-      buckets: { right: { value: 5 } },
-      steps: { log: [{ left: 0, right: 5 }] },
-    };
-    const action = { type: types.FILL, payload };
-    expect(reduce({}, action)).toEqual(payload);
   });
 });
 

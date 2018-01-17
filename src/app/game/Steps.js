@@ -18,18 +18,18 @@ class Steps extends Component {
 
   stepper = (() => {
     const { actions } = this.props;
-    const start = nextStep => nextStep ? actions[nextStep]() : actions.startSteps();
+    const start = currentStep => currentStep ? actions[currentStep]() : actions.startSteps();
     return {
-      tryStep: ({ paused, restart, started, steps: { next: nextStep } }) => {
-        const { paused: prevPaused, restart: prevRestart, steps: { next: prevStep } } = this.props;
+      tryStep: ({ paused, restart, started, steps: { current: currentStep } }) => {
+        const { paused: prevPaused, restart: prevRestart, steps: { current: prevCurrentStep } } = this.props;
         const { stepping } = this.state;
         const shouldStart = !stepping && started && !paused;
         const shouldPause = stepping && paused && paused !== prevPaused;
         const canRestart = restart && restart !== prevRestart;
-        const shouldStep = stepping && nextStep && nextStep !== prevStep;
-        if (shouldStart) this.setState({ stepping: true }, () => start(nextStep));
+        const shouldStep = stepping && currentStep && currentStep !== prevCurrentStep;
+        if (shouldStart) this.setState({ stepping: true }, () => start(currentStep));
         else if (shouldPause || canRestart) this.setState({ stepping: false });
-        else if (shouldStep) actions[nextStep]();
+        else if (shouldStep) actions[currentStep]();
       },
     };
   })();

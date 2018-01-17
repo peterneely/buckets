@@ -114,17 +114,15 @@ describe('setTargetSize', () => {
 });
 
 describe('Stepping', () => {
-  beforeEach(jest.useFakeTimers);
-
   it('Should be able to start stepping', () => {
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.startSteps());
-    const actions = store.getActions();
     const payload = _.merge({}, startStepsState, { buckets: { big: 'right', small: 'left' } });
-    expect(actions.length).toEqual(2);
+    const actions = store.getActions();
+    expect(actions.length).toEqual(3);
     expect(actions[0]).toEqual({ type: types.CLEAR_STEPS_LOG });
     expect(actions[1]).toEqual({ type: types.START_STEPS, payload });
-    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
+    expect(actions[2]).toEqual({ type: types.SET_NEXT_STEP, payload: 'fill' });
   });
 
   it('Should be able to fill the big bucket', () => {
@@ -134,8 +132,10 @@ describe('Stepping', () => {
       buckets: { right: { value: 5 } },
       steps: { log: [{ left: 0, right: 5 }] },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
-    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
+    const actions = store.getActions();
+    expect(actions.length).toEqual(2);
+    expect(actions[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(actions[1]).toEqual({ type: types.SET_NEXT_STEP, payload: 'transfer' });
   });
 
   it('Should be able to fill the small bucket if it is the same size as the target', () => {
@@ -146,11 +146,12 @@ describe('Stepping', () => {
       buckets: { left: { value: 4 } },
       steps: { log: [{ left: 4, right: 0 }] },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
-    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
+    const actions = store.getActions();
+    expect(actions.length).toEqual(2);
+    expect(actions[0]).toEqual({ type: types.FILL, payload: expectedPayload });
   });
 
-  it('Should be able to transfer the big bucket to the little bucket', () => {
+  it('Should be able to transfer the big bucket to the small bucket', () => {
     const state = mergeIntoInitialState({ buckets: { right: { value: 5 } } });
     const store = configureStore([thunk])(state);
     store.dispatch(actionCreators.transfer());
@@ -158,7 +159,23 @@ describe('Stepping', () => {
       buckets: { left: { size: 3, value: 3 }, right: { size: 5, value: 2 } },
       steps: { log: [{ left: 3, right: 2 }] },
     };
-    expect(store.getActions()[0]).toEqual({ type: types.TRANSFER, payload: expectedPayload });
-    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
+    const actions = store.getActions();
+    expect(actions.length).toEqual(2);
+    expect(actions[0]).toEqual({ type: types.TRANSFER, payload: expectedPayload });
+    expect(actions[1]).toEqual({ type: types.SET_NEXT_STEP, payload: 'dump' });
+  });
+
+  it('Should be able to dump the small bucket', () => {
+    const state = mergeIntoInitialState({ buckets: { left: { value: 3 }, right: { value: 2 } } });
+    const store = configureStore([thunk])(state);
+    store.dispatch(actionCreators.dump());
+    const expectedPayload = {
+      buckets: { left: { value: 0 } },
+      steps: { log: [{ left: 0, right: 2 }] },
+    };
+    const actions = store.getActions();
+    expect(actions.length).toEqual(2);
+    expect(actions[0]).toEqual({ type: types.DUMP, payload: expectedPayload });
+    expect(actions[1]).toEqual({ type: types.SET_NEXT_STEP, payload: 'transfer' });
   });
 });

@@ -46,7 +46,7 @@ export function startSteps() {
     const small = big === 'left' ? 'right' : 'left';
     dispatch({ type: types.CLEAR_STEPS_LOG });
     dispatch({ type: types.START_STEPS, payload: _.merge({}, startStepsState, { buckets: { big, small } }) });
-    dispatch(trySetNextStep('fill'));
+    dispatch(setNextStep('fill'));
   };
 }
 
@@ -81,8 +81,23 @@ export function transfer() {
       buckets: { [big]: newBigBucket, [small]: newSmallBucket },
       steps: { log: newLog },
     };
+    const nextStep = newSmallBucket.value === smallBucket.size ? 'dump' : (!newBigBucket.value ? 'fill' : 'transfer');
     dispatch({ type: types.TRANSFER, payload });
-    dispatch(trySetNextStep(''));
+    dispatch(trySetNextStep(nextStep));
+  };
+}
+
+export function dump() {
+  return (dispatch, getState) => {
+    const { game: { buckets, steps: { log } } } = getState();
+    const { big, small } = buckets;
+    const { [big]: bigBucket } = buckets;
+    const newLog = [...log];
+    newLog.push({ [small]: 0, [big]: bigBucket.value });
+    const payload = { buckets: { [small]: { value: 0 } }, steps: { log: newLog } };
+    dispatch({ type: types.DUMP, payload });
+    const nextStep = !bigBucket.value ? 'fill' : 'transfer';
+    dispatch(setNextStep(nextStep));
   };
 }
 
@@ -91,7 +106,14 @@ function trySetNextStep(step) {
     const { game: { buckets: { left, right }, target } } = getState();
     if (left.value === target) dispatch({ type: types.LEFT_WINS });
     else if (right.value === target) dispatch({ type: types.RIGHT_WINS });
-    else setTimeout(() => dispatch({ type: types.SET_NEXT_STEP, payload: step }), 1500);
+    else dispatch(setNextStep(step));
+  };
+}
+
+function setNextStep(step) {
+  return dispatch => {
+    dispatch({ type: types.SET_NEXT_STEP, payload: step });
+    setTimeout(() => dispatch({ type: types.SET_CURRENT_STEP }), 2000);
   };
 }
 
