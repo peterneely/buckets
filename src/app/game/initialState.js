@@ -8,7 +8,9 @@ export default {
   errorMessages: [],
   play: {
     disabled: false,
+    leftWins: false,
     paused: false,
+    rightWins: false,
     started: false,
   },
   steps: {

@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { penultimate, toInt } from '_layout/format';
-import { nonPlayableState, playableState } from './fakeStoreStates';
+import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStoreStates';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {
@@ -117,9 +117,14 @@ describe('Stepping', () => {
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.startSteps());
     const actions = store.getActions();
+    const payload = {
+      buckets: { big: 'right', left: { value: 0 }, right: { value: 0 }, small: 'left' },
+      play: { leftWins: false, rightWins: false },
+      steps: { log: [{ left: 0, right: 0 }] },
+    };
     expect(actions.length).toEqual(2);
-    expect(actions[0]).toEqual({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big: 'right', small: 'left' } });
-    expect(actions[1]).toEqual({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
+    expect(actions[0]).toEqual({ type: types.CLEAR_STEPS_LOG });
+    expect(actions[1]).toEqual({ type: types.START_STEPS, payload });
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
@@ -134,11 +139,12 @@ describe('Stepping', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
-  xit('Should be able to transfer the big bucket to the little bucket', () => {
-    const store = configureStore([thunk])(playableState);
+  it('Should be able to transfer the big bucket to the little bucket', () => {
+    const state = mergeIntoInitialState({ buckets: { right: { value: 5 } } });
+    const store = configureStore([thunk])(state);
     store.dispatch(actionCreators.transfer());
     const expectedPayload = {
-      buckets: { left: { value: 3 } },
+      buckets: { left: { size: 3, value: 3 }, right: { size: 5, value: 2 } },
       steps: { log: [{ left: 3, right: 2 }] },
     };
     expect(store.getActions()[0]).toEqual({ type: types.TRANSFER, payload: expectedPayload });

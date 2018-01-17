@@ -22,7 +22,7 @@ describe('Steps', () => {
       const props = steps.props();
       expect(props.actions).toBeDefined();
       expect(props.paused).toBeDefined();
-      expect(props.reset).toBeDefined();
+      expect(props.restart).toBeDefined();
       expect(props.started).toBeDefined();
       expect(props.steps).toBeDefined();
     });

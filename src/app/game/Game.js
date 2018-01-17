@@ -33,9 +33,14 @@ class Game extends Component {
     return {
       render: () => {
         const { game } = this.props;
-        const { buckets: { left, right }, errorMessages, play: { disabled, paused, started }, steps, target } = game;
+        const {
+          buckets: { left, right },
+          errorMessages,
+          play: { disabled, leftWins, paused, rightWins, started },
+          steps,
+          target,
+        } = game;
         const disableInput = started || paused;
-        const reset = _.isEqual(game, initialState);
         return (
           <div style={containerStyle}>
             <div style={rowStyle}>
@@ -74,7 +79,7 @@ class Game extends Component {
               />
               <Reset
                 actions={actions}
-                disabled={reset}
+                disabled={_.isEqual(game, initialState)}
                 style={elementContainerStyle}
               />
             </div>
@@ -85,7 +90,7 @@ class Game extends Component {
               <Steps
                 actions={actions}
                 paused={paused}
-                reset={reset}
+                restart={leftWins || rightWins}
                 started={started}
                 steps={steps}
               />

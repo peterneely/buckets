@@ -25,6 +25,20 @@ describe('Validators', () => {
   });
 });
 
+describe('bucketsSameSize', () => {
+  const validator = getValidator('bucketsSameSize');
+
+  it('Should return false when the state is not valid', () => {
+    const getState = () => mergeIntoInitialState({ buckets: { left: { size: 5 } } });
+    expect(validator.isValid(getState).valid).toBeFalsy();
+  });
+
+  it('Should return true when the state is valid', () => {
+    const getState = () => mergeIntoInitialState(initialState => ({ buckets: { left: { size: initialState.buckets.right.size - 1 } } }));
+    expect(validator.isValid(getState).valid).toBeTruthy();
+  });
+});
+
 describe('oddTargetEvenBuckets', () => {
   const validator = getValidator('oddTargetEvenBuckets');
 
@@ -48,9 +62,7 @@ describe('targetTooBig', () => {
   });
 
   it('Should return true when the state is valid', () => {
-    let getState = () => playableState;
-    expect(validator.isValid(getState).valid).toBeTruthy();
-    getState = () => mergeIntoInitialState({ target: 5 });
+    const getState = () => mergeIntoInitialState({ target: 5 });
     expect(validator.isValid(getState).valid).toBeTruthy();
   });
 });

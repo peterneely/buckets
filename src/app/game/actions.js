@@ -42,8 +42,13 @@ export function startSteps() {
     const { game: { buckets: { left, right } } } = getState();
     const big = left.size > right.size ? 'left' : 'right';
     const small = big === 'left' ? 'right' : 'left';
-    dispatch({ type: types.SET_BIG_SMALL_BUCKETS, payload: { big, small } });
-    dispatch({ type: types.INITIALIZE_STEPS_LOG, payload: { log: [{ left: 0, right: 0 }] } });
+    const payload = {
+      buckets: { big, left: { value: 0 }, right: { value: 0 }, small },
+      play: { leftWins: false, rightWins: false },
+      steps: { log: [{ left: 0, right: 0 }] },
+    };
+    dispatch({ type: types.CLEAR_STEPS_LOG });
+    dispatch({ type: types.START_STEPS, payload });
     dispatch(setNextStep('fill'));
   };
 }
@@ -82,8 +87,11 @@ export function transfer() {
 }
 
 function setNextStep(step) {
-  return dispatch => {
-    setTimeout(() => dispatch({ type: types.SET_NEXT_STEP, payload: step }), 1500);
+  return (dispatch, getState) => {
+    const { game: { buckets: { left, right }, target } } = getState();
+    if (left.value === target) dispatch({ type: types.LEFT_WINS });
+    else if (right.value === target) dispatch({ type: types.RIGHT_WINS });
+    else setTimeout(() => dispatch({ type: types.SET_NEXT_STEP, payload: step }), 1500);
   };
 }
 

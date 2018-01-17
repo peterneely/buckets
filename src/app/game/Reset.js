@@ -39,9 +39,9 @@ class Reset extends Component {
           modal
           onRequestClose={handleClose}
           open={this.state.confirm}
-          title="Reset the game"
+          title="Reset game"
         >
-          {'Are you sure you wish to reset the game?'}
+          {'Reset the game to the default options?'}
         </Dialog>
       ),
     };

@@ -1,5 +1,15 @@
 export const validators = [
   {
+    id: 'bucketsSameSize',
+    isValid: getState => {
+      const { game: { buckets: { left, right } } } = getState();
+      return {
+        valid: left.size !== right.size,
+        errorMessage: 'Buckets cannot be the same size.',
+      };
+    },
+  },
+  {
     id: 'oddTargetEvenBuckets',
     isValid: getState => {
       const { game: { buckets: { left, right }, target } } = getState();
