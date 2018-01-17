@@ -3,10 +3,12 @@ import { grey300, lightBlue500, lightGreen50, lightGreen500, red50, red500 } fro
 
 export const animations = {
   transition: 'all 0.3s ease',
+  transitionSlow: 'all 1.5s ease',
 };
 
 export const colors = {
   bucket: {
+    backgroundColor: grey300,
     water: lightBlue500,
   },
   errors: {

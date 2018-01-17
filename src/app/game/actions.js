@@ -101,7 +101,7 @@ export function transfer() {
 function setNextStep(step) {
   return dispatch => {
     dispatch({ type: types.SET_NEXT_STEP, payload: step });
-    setTimeout(() => dispatch({ type: types.SET_CURRENT_STEP }), 50);
+    setTimeout(() => dispatch({ type: types.SET_CURRENT_STEP }), 2000);
   };
 }
 
