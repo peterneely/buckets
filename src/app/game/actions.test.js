@@ -3,8 +3,9 @@ import thunk from 'redux-thunk';
 import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
-import { penultimate, toInt } from '_layout/format';
 import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStoreStates';
+import { penultimate, toInt } from '_layout/format';
+import { startStepsState } from './initialState';
 
 describe('pauseGame', () => {
   it('Should dispatch the correct action', () => {
@@ -61,7 +62,8 @@ describe('setBucketSize', () => {
   });
 
   it('Should enable game play if the target size is achievable', () => {
-    const store = configureStore([thunk])(playableState);
+    const state = mergeIntoInitialState({ errorMessages: ['something terrible happened'], play: { disabled: true } });
+    const store = configureStore([thunk])(state);
     store.dispatch(actionCreators.setBucketSize('right', '5')); // Triggers the prevent play action, doesn't set the state
     expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
     expect(_.last(store.getActions())).toEqual({ type: types.SET_ERROR_MESSAGES, payload: [] });
@@ -103,7 +105,8 @@ describe('setTargetSize', () => {
   });
 
   it('Should enable game play if all validation rules pass', () => {
-    const store = configureStore([thunk])(playableState);
+    const state = mergeIntoInitialState({ errorMessages: ['something terrible happened'], play: { disabled: true } });
+    const store = configureStore([thunk])(state);
     store.dispatch(actionCreators.setTargetSize('4')); // Triggers the prevent play action, doesn't set the state
     expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: false });
     expect(_.last(store.getActions())).toEqual({ type: types.SET_ERROR_MESSAGES, payload: [] });
@@ -117,11 +120,7 @@ describe('Stepping', () => {
     const store = configureStore([thunk])(playableState);
     store.dispatch(actionCreators.startSteps());
     const actions = store.getActions();
-    const payload = {
-      buckets: { big: 'right', left: { value: 0 }, right: { value: 0 }, small: 'left' },
-      play: { leftWins: false, rightWins: false },
-      steps: { log: [{ left: 0, right: 0 }] },
-    };
+    const payload = _.merge({}, startStepsState, { buckets: { big: 'right', small: 'left' } });
     expect(actions.length).toEqual(2);
     expect(actions[0]).toEqual({ type: types.CLEAR_STEPS_LOG });
     expect(actions[1]).toEqual({ type: types.START_STEPS, payload });

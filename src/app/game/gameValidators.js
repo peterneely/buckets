@@ -5,7 +5,7 @@ export const validators = [
       const { game: { buckets: { left, right } } } = getState();
       return {
         valid: left.size !== right.size,
-        errorMessage: 'Buckets cannot be the same size.',
+        errorMessage: 'Both buckets cannot be the same size.',
       };
     },
   },

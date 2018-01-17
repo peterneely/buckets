@@ -1,7 +1,9 @@
+import _ from 'lodash';
 import * as types from './types';
+import { startStepsState } from './initialState';
 import { toInt } from '_layout/format';
-import { validators } from './gameValidators';
 import { transferBuckets } from './buckets';
+import { validators } from './gameValidators';
 
 export function pauseGame() {
   return { type: types.PAUSE_GAME };
@@ -42,14 +44,9 @@ export function startSteps() {
     const { game: { buckets: { left, right } } } = getState();
     const big = left.size > right.size ? 'left' : 'right';
     const small = big === 'left' ? 'right' : 'left';
-    const payload = {
-      buckets: { big, left: { value: 0 }, right: { value: 0 }, small },
-      play: { leftWins: false, rightWins: false },
-      steps: { log: [{ left: 0, right: 0 }] },
-    };
     dispatch({ type: types.CLEAR_STEPS_LOG });
-    dispatch({ type: types.START_STEPS, payload });
-    dispatch(setNextStep('fill'));
+    dispatch({ type: types.START_STEPS, payload: _.merge({}, startStepsState, { buckets: { big, small } }) });
+    dispatch(trySetNextStep('fill'));
   };
 }
 
@@ -65,7 +62,7 @@ export function fill() {
       steps: { log: newLog },
     };
     dispatch({ type: types.FILL, payload });
-    dispatch(setNextStep('transfer'));
+    dispatch(trySetNextStep('transfer'));
   };
 }
 
@@ -82,11 +79,11 @@ export function transfer() {
       steps: { log: newLog },
     };
     dispatch({ type: types.TRANSFER, payload });
-    dispatch(setNextStep(''));
+    dispatch(trySetNextStep(''));
   };
 }
 
-function setNextStep(step) {
+function trySetNextStep(step) {
   return (dispatch, getState) => {
     const { game: { buckets: { left, right }, target } } = getState();
     if (left.value === target) dispatch({ type: types.LEFT_WINS });
@@ -104,9 +101,11 @@ function setSize({ size, ifValid }) {
 
 function tryDisableGame() {
   return (dispatch, getState) => {
+    const { game: { errorMessages: prevErrorMessages, play: { disabled } } } = getState();
     const invalidResults = validators.map(({ isValid }) => isValid(getState)).filter(({ valid }) => !valid);
     const errorMessages = invalidResults.map(({ errorMessage }) => errorMessage);
-    dispatch({ type: types.DISABLE_GAME, payload: !!invalidResults.length });
-    dispatch({ type: types.SET_ERROR_MESSAGES, payload: errorMessages });
+    const disable = !!invalidResults.length;
+    if (disable !== disabled) dispatch({ type: types.DISABLE_GAME, payload: disable });
+    if (!_.isEqual(errorMessages, prevErrorMessages)) dispatch({ type: types.SET_ERROR_MESSAGES, payload: errorMessages });
   };
 }

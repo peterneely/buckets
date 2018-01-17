@@ -19,3 +19,17 @@ export default {
   },
   target: 4,
 };
+
+export const startStepsState = {
+  buckets: {
+    left: { value: 0 },
+    right: { value: 0 },
+  },
+  play: {
+    leftWins: false,
+    rightWins: false,
+  },
+  steps: {
+    log: [{ left: 0, right: 0 }],
+  },
+};

@@ -1,6 +1,7 @@
+import _ from 'lodash';
 import * as types from './types';
 import reduce from './reducers';
-import initialState from './initialState';
+import initialState, { startStepsState } from './initialState';
 
 describe('Game configuration', () => {
   it('Sets bucket size correctly', () => {
@@ -56,11 +57,7 @@ describe('Game play', () => {
   it('Starts stepping correctly', () => {
     let action = { type: types.CLEAR_STEPS_LOG };
     expect(reduce({}, action)).toEqual({ steps: { log: [] } });
-    const payload = {
-      buckets: { big: 'right', left: { value: 0 }, right: { value: 0 }, small: 'left' },
-      play: { leftWins: false, rightWins: false },
-      steps: { log: [{ left: 0, right: 0 }] },
-    };
+    const payload = _.merge({}, startStepsState, { buckets: { big: 'right', small: 'left' } });
     action = { type: types.START_STEPS, payload };
     expect(reduce({}, action)).toEqual(payload);
   });
