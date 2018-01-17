@@ -17,7 +17,7 @@ export default {
     alias: {
       _app: path.resolve(__dirname, 'src/app/'),
       _game: path.resolve(__dirname, 'src/app/game/'),
-      _layout: path.resolve(__dirname, 'src/app/layout/'),
+      _images: path.resolve(__dirname, 'src/images/'),
       _store: path.resolve(__dirname, 'src/store/'),
     }
   },

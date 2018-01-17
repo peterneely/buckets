@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { isSizeValid, validators } from './gameValidators';
 import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStoreStates';
-import { toInt } from '_layout/format';
+import { toInt } from '_app/format';
 
 const getValidator = id => validators.find(validator => validator.id == id);
 

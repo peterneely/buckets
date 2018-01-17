@@ -4,7 +4,7 @@ import _ from 'lodash';
 import * as actionCreators from './actions';
 import * as types from './types';
 import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStoreStates';
-import { penultimate, toInt } from '_layout/format';
+import { penultimate, toInt } from '_app/format';
 import { startStepsState } from './initialState';
 
 describe('pauseGame', () => {

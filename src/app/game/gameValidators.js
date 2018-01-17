@@ -1,4 +1,4 @@
-import { toInt } from '_layout/format';
+import { toInt } from '_app/format';
 
 export function isSizeValid(size) {
   const sizeInt = toInt(size);
