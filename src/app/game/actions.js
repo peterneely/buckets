@@ -49,7 +49,7 @@ export function setBucketSize(bucketId, size) {
   return dispatch => {
     const { valid, validSize } = isSizeValid(size);
     if (!valid) return;
-    dispatch({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: validSize } });
+    dispatch({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: validSize, value: 0 } });
     dispatch(tryDisableGame());
   };
 }

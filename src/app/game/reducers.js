@@ -23,7 +23,7 @@ export default function reduce(state = initialState, action) {
     case types.RIGHT_WINS:
       return { ...state, play: { ...state.play, rightWins: true, started: false }, steps: { ...state.steps, current: '' } };
     case types.SET_BUCKET_SIZE:
-      return { ...state, buckets: { ...state.buckets, [payload.bucketId]: { ...state.buckets[payload.bucketId], size: payload.size } } };
+      return { ...state, buckets: { ...state.buckets, [payload.bucketId]: { ...state.buckets[payload.bucketId], size: payload.size, value: 0 } } };
     case types.SET_CURRENT_STEP:
       return { ...state, steps: { ...state.steps, current: state.steps.next, next: '' } };
     case types.SET_ERROR_MESSAGES:

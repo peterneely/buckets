@@ -17,6 +17,7 @@ class Bucket extends Component {
         const validSize = size > maxSize ? maxSize : (size < minSize ? minSize : size);
         const length = 40 + (validSize * 30);
         const height = (value / validSize) * (length - 5);
+        const fontSize = (validSize * 6) + 5;
         return {
           containerStyle: {
             display: 'flex',
@@ -40,10 +41,21 @@ class Bucket extends Component {
             backgroundColor: 'white',
             textAlign: 'center',
             width: length,
-            zIndex: 99,
+            zIndex: 4,
           },
           inputStyle: {
             width: 100,
+          },
+          valueStyle: {
+            bottom: 10,
+            color: 'white',
+            fontSize,
+            fontWeight: 'bold',
+            marginBottom: (validSize * 3) - 2,
+            position: 'absolute',
+            textAlign: 'center',
+            width: '90%',
+            zIndex: 3,
           },
           waterStyle: {
             backgroundColor: water,
@@ -70,16 +82,17 @@ class Bucket extends Component {
 
   bucket = (styles => {
     const { actions: { setBucketSize }, id } = this.props;
-    const handleSetValue = (event, newValue) => setBucketSize(id, newValue);
+    const handleSetSize = (event, newValue) => setBucketSize(id, newValue);
     return {
       render: () => {
-        const { disabled, size } = this.props;
+        const { disabled, size, value } = this.props;
         const {
           containerStyle,
           imageContainer,
           imageStyle,
           inputContainerStyle,
           inputStyle,
+          valueStyle,
           waterStyle,
           waterTopStyle,
         } = styles.create();
@@ -90,12 +103,15 @@ class Bucket extends Component {
                 <div style={waterTopStyle} />
               </div>
               <img src={bucket} alt="bucket" style={imageStyle} />
+              <div style={valueStyle}>
+                {value}
+              </div>
             </div>
             <div style={inputContainerStyle}>
               <TextField
                 disabled={disabled}
                 floatingLabelText="Size"
-                onChange={handleSetValue}
+                onChange={handleSetSize}
                 style={inputStyle}
                 type="number"
                 value={size}

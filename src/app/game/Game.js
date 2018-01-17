@@ -21,7 +21,7 @@ class Game extends Component {
       justifyContent: 'center',
       width: '100%',
     },
-    elementContainerStyle: { margin: 30 },
+    elementContainerStyle: { margin: '30px 20px 0' },
     rowStyle: { alignItems: 'flex-end', display: 'flex', justifyContent: 'center' },
   };
 
@@ -68,7 +68,7 @@ class Game extends Component {
                 value={right.value}
               />
             </div>
-            <div style={rowStyle}>
+            <div style={{ ...rowStyle, marginBottom: 30 }}>
               <PlayPause
                 actions={actions}
                 disabled={disabled}

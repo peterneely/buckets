@@ -40,7 +40,7 @@ class Steps extends Component {
     const { results: { backgroundColor } } = colors;
     const { border, borderRadius } = elements;
     return {
-      columnStyle: { fontSize: 14, textAlign: 'center' },
+      columnStyle: { fontSize: 16, textAlign: 'center' },
       getContainerStyle: () => {
         const { play: { leftWins, rightWins, started } } = this.props;
         const show = started || leftWins || rightWins;

@@ -26,19 +26,22 @@ describe('restartGame', () => {
 });
 
 describe('setBucketSize', () => {
-  it('Should allow the size to be increased', () => {
+  it('Should allow the size to be changed', () => {
+    const bucketId = 'anyBucketId';
+    ['2', '3', '100', '5'].forEach(size => {
+      const store = configureStore([thunk])(playableState);
+      store.dispatch(actionCreators.setBucketSize(bucketId, size));
+      expect(store.getActions()[0]).toEqual({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: toInt(size), value: 0 } });
+    });
+  });
+
+  it('Should set the value to 0 when the size is changed', () => {
     const bucketId = 'anyBucketId';
     ['2', '3', '4', '100'].forEach(size => {
       const store = configureStore([thunk])(playableState);
       store.dispatch(actionCreators.setBucketSize(bucketId, size));
-      expect(store.getActions()[0]).toEqual({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: toInt(size) } });
+      expect(store.getActions()[0]).toEqual({ type: types.SET_BUCKET_SIZE, payload: { bucketId, size: toInt(size), value: 0 } });
     });
-  });
-
-  it('Should disable game play if two bucket sizes are even numbers and the target size is an odd number', () => {
-    const store = configureStore([thunk])(nonPlayableState);
-    store.dispatch(actionCreators.setBucketSize('right', '4')); // Triggers the prevent play action, doesn't set the state
-    expect(penultimate(store.getActions())).toEqual({ type: types.DISABLE_GAME, payload: true });
   });
 
   it('Should set an error message for each validation rules that fails', () => {

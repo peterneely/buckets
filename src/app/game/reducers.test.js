@@ -7,8 +7,8 @@ describe('Game configuration', () => {
   it('Sets bucket size correctly', () => {
     ['left', 'right'].forEach(bucketId => {
       [1, 2, 3, 100].forEach(size => {
-        const action = { type: types.SET_BUCKET_SIZE, payload: { bucketId, size } };
-        expect(reduce({ buckets: {} }, action)).toEqual({ buckets: { [bucketId]: { size } } });
+        const action = { type: types.SET_BUCKET_SIZE, payload: { bucketId, size, value: 0 } };
+        expect(reduce({ buckets: {} }, action)).toEqual({ buckets: { [bucketId]: { size, value: 0 } } });
       });
     });
   });
