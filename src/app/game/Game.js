@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
 import * as gameActions from './actions';
 import Bucket from './Bucket';
 import Errors from './Errors';
 import PlayPause from './PlayPause';
-import Reset from './Reset';
+import Restart from './Restart';
 import Steps from './Steps';
 import Target from './Target';
-import initialState from './initialState';
 
 class Game extends Component {
   styles = {
@@ -77,9 +75,9 @@ class Game extends Component {
                 started={started}
                 style={elementContainerStyle}
               />
-              <Reset
+              <Restart
                 actions={actions}
-                disabled={_.isEqual(game, initialState)}
+                disabled={!started}
                 style={elementContainerStyle}
               />
             </div>

@@ -54,6 +54,13 @@ describe('Game play', () => {
     expect(reduce({}, action)).toEqual({ play: { paused: false, started: true } });
   });
 
+  it('Restarts game correctly', () => {
+    const action = { type: types.RESTART_GAME };
+    expect(reduce({}, action)).toEqual(initialState);
+  });
+});
+
+describe('Game steps', () => {
   it('Starts stepping correctly', () => {
     let action = { type: types.CLEAR_STEPS_LOG };
     expect(reduce({}, action)).toEqual({ steps: { log: [] } });
@@ -61,9 +68,7 @@ describe('Game play', () => {
     action = { type: types.START_STEPS, payload };
     expect(reduce({}, action)).toEqual(payload);
   });
-});
 
-describe('Game steps', () => {
   it('Should set the next step correctly', () => {
     const action = { type: types.SET_NEXT_STEP, payload: 'any' };
     expect(reduce({}, action)).toEqual({ steps: { next: 'any' } });
@@ -100,14 +105,4 @@ describe('Game steps', () => {
     const action = { type: types.DUMP, payload };
     expect(reduce({ buckets: { left: {} } }, action)).toEqual(payload);
   });
-
-  it('Resets game correctly', () => {
-    const action = { type: types.RESET_GAME };
-    expect(reduce({}, action)).toEqual(initialState);
-  });
-});
-
-it('Returns the correct default state if no action is reduced', () => {
-  const action = { type: types.NO_ACTION };
-  expect(reduce({}, action)).toEqual({});
 });

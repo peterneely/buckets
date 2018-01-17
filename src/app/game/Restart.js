@@ -5,16 +5,16 @@ import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Redo from 'material-ui/svg-icons/content/redo';
 
-class Reset extends Component {
+class Restart extends Component {
   state = { confirm: false };
 
   dialog = (() => {
-    const { actions: { resetGame } } = this.props;
+    const { actions: { restartGame } } = this.props;
     const contentStyle = { width: 400 };
     const handleClose = () => this.setState({ confirm: false });
-    const handleReset = () => {
+    const handleRestart = () => {
       handleClose();
-      resetGame();
+      restartGame();
     };
     const buttons = [
       <FlatButton
@@ -25,9 +25,9 @@ class Reset extends Component {
         primary
       />,
       <FlatButton
-        key="reset"
-        label="Reset"
-        onClick={handleReset}
+        key="restart"
+        label="Restart"
+        onClick={handleRestart}
         primary
       />,
     ];
@@ -39,22 +39,22 @@ class Reset extends Component {
           modal
           onRequestClose={handleClose}
           open={this.state.confirm}
-          title="Reset game"
+          title="Restart game"
         >
-          {'Reset the game to the default options?'}
+          {'Are you sure you want to restart the game?'}
         </Dialog>
       ),
     };
   })();
 
   button = (() => {
-    const handleReset = () => this.setState({ confirm: true });
+    const handleRestart = () => this.setState({ confirm: true });
     return {
       render: () => {
         const { disabled, style = {} } = this.props;
         return (
           <div style={style}>
-            <FloatingActionButton disabled={disabled} onClick={handleReset}>
+            <FloatingActionButton disabled={disabled} onClick={handleRestart}>
               <Redo />
             </FloatingActionButton>
           </div>
@@ -73,10 +73,10 @@ class Reset extends Component {
   }
 }
 
-Reset.propTypes = {
+Restart.propTypes = {
   actions: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
   style: PropTypes.object,
 };
 
-export default Reset;
+export default Restart;

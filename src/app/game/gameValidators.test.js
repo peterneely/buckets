@@ -1,10 +1,45 @@
 import _ from 'lodash';
+import { isSizeValid, validators } from './gameValidators';
 import { mergeIntoInitialState, nonPlayableState, playableState } from './fakeStoreStates';
-import { validators } from './gameValidators';
+import { toInt } from '_layout/format';
 
 const getValidator = id => validators.find(validator => validator.id == id);
 
-describe('Validators', () => {
+describe('isSizeValid', () => {
+  it('Returns true and the valid number when the size is a number that is 1 or greater', () => {
+    ['1', '2', '10'].forEach(size => {
+      const { valid, validSize } = isSizeValid(size);
+      expect(valid).toBeTruthy();
+      expect(validSize).toEqual(toInt(size));
+    });
+  });
+
+  it('Returns false when the size is less than 1', () => {
+    ['0', '-1'].forEach(size => {
+      const { valid, validSize } = isSizeValid(size);
+      expect(valid).toBeFalsy();
+      expect(validSize).toBeNull();
+    });
+  });
+
+  it('Returns false when the size contains a decimal', () => {
+    ['1.1', '2.1'].forEach(size => {
+      const { valid, validSize } = isSizeValid(size);
+      expect(valid).toBeFalsy();
+      expect(validSize).toBeNull();
+    });
+  });
+
+  it('Returns false when the size contains a non-numeric character', () => {
+    ['a', 'b', '@', '$', '~'].forEach(size => {
+      const { valid, validSize } = isSizeValid(size);
+      expect(valid).toBeFalsy();
+      expect(validSize).toBeNull();
+    });
+  });
+});
+
+describe('validators', () => {
   it('Should export a non-empty array of validator objects', () => {
     expect(validators).toBeDefined();
     expect(_.isArray(validators)).toBeTruthy();

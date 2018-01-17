@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import Bucket from './Bucket';
 import Game from './Game';
 import PlayPause from './PlayPause';
-import Reset from './Reset';
+import Restart from './Restart';
 import Target from './Target';
 import { playableState } from './fakeStoreStates';
 
@@ -39,8 +39,8 @@ describe('Game', () => {
       expect(button.props().started).toBeDefined();
     });
 
-    it('Should have a reset button', () => {
-      const button = game.find(Reset);
+    it('Should have a restart button', () => {
+      const button = game.find(Restart);
       expect(button.length).toEqual(1);
     });
   });

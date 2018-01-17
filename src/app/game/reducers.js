@@ -18,7 +18,7 @@ export default function reduce(state = initialState, action) {
       return { ...state, play: { ...state.play, leftWins: true, started: false }, steps: { ...state.steps, current: '' } };
     case types.PAUSE_GAME:
       return { ...state, play: { ...state.play, paused: true } };
-    case types.RESET_GAME:
+    case types.RESTART_GAME:
       return { ...initialState };
     case types.RIGHT_WINS:
       return { ...state, play: { ...state.play, rightWins: true, started: false }, steps: { ...state.steps, current: '' } };

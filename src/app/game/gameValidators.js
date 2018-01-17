@@ -1,3 +1,11 @@
+import { toInt } from '_layout/format';
+
+export function isSizeValid(size) {
+  const sizeInt = toInt(size);
+  const valid = size >= 1 && sizeInt == size;
+  return { valid, validSize: valid ? sizeInt : null };
+}
+
 export const validators = [
   {
     id: 'bucketsHalfSize',
