@@ -5,8 +5,12 @@ import TextField from 'material-ui/TextField';
 class Target extends Component {
   target = (() => {
     const { actions: { setTargetSize }, style = {} } = this.props;
-    const inputStyle = { width: 100 };
-    const handleChange = (event, newValue) => setTargetSize(newValue);
+    const inputStyle = { fontSize: 18, width: 100 };
+    const handleChange = (event, newValue) => {
+      setTargetSize(newValue);
+      event && handleFocus(event);
+    };
+    const handleFocus = event => event.target.select();
     return {
       render: () => {
         const { disabled, value } = this.props;
@@ -16,6 +20,7 @@ class Target extends Component {
               disabled={disabled}
               floatingLabelText="Target Size"
               onChange={handleChange}
+              onFocus={handleFocus}
               style={inputStyle}
               type="number"
               value={value}

@@ -56,16 +56,20 @@ class Game extends Component {
                 disabled={disableInput}
                 id="left"
                 size={left.size}
+                stop={leftWins || rightWins}
                 style={elementContainerStyle}
                 value={left.value}
+                wins={leftWins}
               />
               <Bucket
                 actions={actions}
                 disabled={disableInput}
                 id="right"
                 size={right.size}
+                stop={leftWins || rightWins}
                 style={elementContainerStyle}
                 value={right.value}
+                wins={rightWins}
               />
             </div>
             <div style={{ ...rowStyle, marginBottom: 30 }}>

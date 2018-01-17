@@ -1,10 +1,24 @@
+/* eslint-disable import/extensions */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import bucket from '_images/bucket.png';
+import splash from '_images/splash.png';
 import { animations, colors } from '_app/muiTheme';
 
 class Bucket extends Component {
+  state = { rotate: false };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value < this.props.value && !this.state.rotate) this.setState({ rotate: true });
+    if (nextProps.value >= this.props.value && this.state.rotate) this.setState({ rotate: false });
+    if (nextProps.wins !== this.props.wins && this.state.rotate) this.setState({ rotate: false });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.stop && this.state.rotate) setTimeout(() => this.setState({ rotate: false }), 2000);
+  }
+
   styles = (() => {
     const { style = {} } = this.props;
     const { transition, transitionSlow } = animations;
@@ -29,6 +43,7 @@ class Bucket extends Component {
             height: length,
             width: length,
             position: 'relative',
+            transform: this.state.rotate ? 'rotate(-25deg)' : 'none',
             transition,
           },
           imageStyle: {
@@ -44,6 +59,7 @@ class Bucket extends Component {
             zIndex: 4,
           },
           inputStyle: {
+            fontSize: 18,
             width: 100,
           },
           valueStyle: {
@@ -85,7 +101,7 @@ class Bucket extends Component {
     const handleFocus = event => event.target.select();
     const handleSetSize = (event, newValue) => {
       setBucketSize(id, newValue);
-      handleFocus(event);
+      event && handleFocus(event);
     };
     return {
       render: () => {
@@ -103,6 +119,16 @@ class Bucket extends Component {
         return (
           <div style={containerStyle}>
             <div style={imageContainer}>
+              <img src={splash} alt="splash" style={{
+                height: 75,
+                left: -45,
+                opacity: this.state.rotate ? 1 : 0,
+                position: 'absolute',
+                top: -5,
+                transition: animations.transition,
+                width: 75,
+                zIndex: 5,
+              }} />
               <div style={waterStyle}>
                 <div style={waterTopStyle} />
               </div>
@@ -138,8 +164,10 @@ Bucket.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
+  stop: PropTypes.bool,
   style: PropTypes.object,
   value: PropTypes.number.isRequired,
+  wins: PropTypes.bool,
 };
 
 export default Bucket;
