@@ -52,13 +52,16 @@ export function startSteps() {
 
 export function fill() {
   return (dispatch, getState) => {
-    const { game: { buckets, steps: { log } } } = getState();
+    const { game: { buckets, steps: { log }, target } } = getState();
     const { big, small } = buckets;
-    const { [big]: { size: bigSize }, [small]: { value: smallValue } } = buckets;
+    const { [small]: smallBucket } = buckets;
+    const bucketToFill = smallBucket.size === target ? small : big;
+    const otherBucket = bucketToFill === small ? big : small;
+    const fullValue = buckets[bucketToFill].size;
     const newLog = [...log];
-    newLog.push({ [small]: smallValue, [big]: bigSize });
+    newLog.push({ [bucketToFill]: fullValue, [otherBucket]: buckets[otherBucket].value });
     const payload = {
-      buckets: { [big]: { value: bigSize } },
+      buckets: { [bucketToFill]: { value: fullValue } },
       steps: { log: newLog },
     };
     dispatch({ type: types.FILL, payload });

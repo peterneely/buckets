@@ -138,6 +138,18 @@ describe('Stepping', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
   });
 
+  it('Should be able to fill the small bucket if it is the same size as the target', () => {
+    const state = mergeIntoInitialState({ buckets: { left: { size: 4 } } });
+    const store = configureStore([thunk])(state);
+    store.dispatch(actionCreators.fill());
+    const expectedPayload = {
+      buckets: { left: { value: 4 } },
+      steps: { log: [{ left: 4, right: 0 }] },
+    };
+    expect(store.getActions()[0]).toEqual({ type: types.FILL, payload: expectedPayload });
+    expect(setTimeout).toHaveBeenCalledTimes(1); // setNextStep
+  });
+
   it('Should be able to transfer the big bucket to the little bucket', () => {
     const state = mergeIntoInitialState({ buckets: { right: { value: 5 } } });
     const store = configureStore([thunk])(state);
