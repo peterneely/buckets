@@ -1,11 +1,14 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { grey300, lightGreen50, lightGreen500, red50, red500 } from 'material-ui/styles/colors';
+import { grey300, lightBlue500, lightGreen50, lightGreen500, red50, red500 } from 'material-ui/styles/colors';
 
 export const animations = {
   transition: 'all 0.3s ease',
 };
 
 export const colors = {
+  bucket: {
+    water: lightBlue500,
+  },
   errors: {
     backgroundColor: red50,
     color: red500,
