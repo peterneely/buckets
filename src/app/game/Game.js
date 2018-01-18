@@ -11,23 +11,27 @@ import Steps from './Steps';
 import Target from './Target';
 
 class Game extends Component {
-  styles = {
-    containerStyle: {
-      display: 'flex',
-      flexDirection: 'column',
-      fontFamily: 'Roboto',
-      fontSize: 16,
-      fontWeight: 400,
-      justifyContent: 'center',
-      width: '100%',
-    },
-    elementContainerStyle: { margin: '30px 20px 0' },
-    rowStyle: { alignItems: 'flex-end', display: 'flex', justifyContent: 'center' },
-  };
+  styles = (() => {
+    const rowStyle = { alignItems: 'flex-end', display: 'flex', justifyContent: 'center' };
+    return {
+      buttonsContainerStyle: { ...rowStyle, marginBottom: 30, zIndex: 10 },
+      containerStyle: {
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        fontWeight: 400,
+        justifyContent: 'center',
+        width: '100%',
+      },
+      elementContainerStyle: { margin: '30px 20px 0' },
+      rowStyle,
+    };
+  })();
 
   game = (styles => {
     const { actions } = this.props;
-    const { containerStyle, elementContainerStyle, rowStyle } = styles;
+    const { buttonsContainerStyle, containerStyle, elementContainerStyle, rowStyle } = styles;
     return {
       render: () => {
         const { game } = this.props;
@@ -72,7 +76,7 @@ class Game extends Component {
                 wins={rightWins && !!right.value}
               />
             </div>
-            <div style={{ ...rowStyle, marginBottom: 30, zIndex: 10 }}>
+            <div style={buttonsContainerStyle}>
               <PlayPause
                 actions={actions}
                 disabled={disabled}

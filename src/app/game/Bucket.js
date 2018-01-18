@@ -5,7 +5,9 @@ import TextField from 'material-ui/TextField';
 import Check from 'material-ui/svg-icons/action/check-circle';
 import bucket from '_images/bucket.png';
 import splash from '_images/splash.png';
-import { animations, colors } from '_app/muiTheme';
+import createStyles from './bucketStyles';
+
+const delays = { short: 200, long: 600 };
 
 class Bucket extends Component {
   state = { showValue: false, tip: false, value: 0, wins: false };
@@ -15,93 +17,7 @@ class Bucket extends Component {
     [tryShowValue, tryTip, tryWin].forEach(tryAction => tryAction(nextProps));
   }
 
-  styles = (() => {
-    const { style = {} } = this.props;
-    const { transition, transitionSlow } = animations;
-    const { bucket: { backgroundColor, water } } = colors;
-    const minSize = 2;
-    const maxSize = 6;
-    return {
-      create: () => {
-        const { size, tipLeft, value } = this.props;
-        const { showValue, tip } = this.state;
-        const validSize = size > maxSize ? maxSize : (size < minSize ? minSize : size);
-        const heightAdjustment = size > maxSize ? (value / size) : (size < minSize ? (value * validSize) : 1);
-        const valueForHeight = value > maxSize ? maxSize : value; // (value < minSize ? minSize : value);
-        const length = 40 + (validSize * 30);
-        const height = ((valueForHeight * heightAdjustment) / validSize) * (length - 5);
-        const fontSize = (validSize * 6) + 5;
-        return {
-          containerStyle: {
-            display: 'flex',
-            flexDirection: 'column',
-            ...style,
-          },
-          imageContainer: {
-            backgroundColor,
-            height: length,
-            width: length,
-            position: 'relative',
-            transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
-            transition,
-          },
-          imageStyle: {
-            // border: '1px solid white',
-            height: '100%',
-            // position: 'absolute',
-            width: '100%',
-            // zIndex: 2,
-          },
-          inputContainerStyle: {
-            backgroundColor: 'white',
-            textAlign: 'center',
-            width: length,
-            zIndex: 5,
-          },
-          inputStyle: {
-            fontSize: 18,
-            width: 100,
-          },
-          valueStyle: {
-            bottom: 10,
-            color: 'white',
-            fontSize,
-            fontWeight: 'bold',
-            marginBottom: (validSize * 3) - 2,
-            opacity: showValue ? 1 : 0,
-            position: 'absolute',
-            textAlign: 'center',
-            transition,
-            width: '90%',
-            zIndex: 4,
-          },
-          waterStyle: {
-            backgroundColor: water,
-            bottom: -2,
-            height: height * 0.81,
-            margin: '0 5px',
-            opacity: 0.5,
-            position: 'absolute',
-            transition: transitionSlow,
-            width: '90%', // 115
-            zIndex: 1,
-          },
-          waterTopStyle: {
-            backgroundColor: water,
-            borderRadius: '50%',
-            height: 40 + (height * 0.2),
-            // opacity: 0.5,
-            position: 'absolute',
-            top: -12 - (height * 0.04),
-            width: '100%', // 115
-            zIndex: 2,
-          },
-        };
-      },
-    };
-  })();
-
-  bucket = (styles => {
+  bucket = (() => {
     const { actions: { setBucketSize }, id } = this.props;
     const handleFocus = event => event.target.select();
     const handleSetSize = (event, newValue) => {
@@ -111,72 +27,32 @@ class Bucket extends Component {
     return {
       render: () => {
         const { disabled, size, tipLeft } = this.props;
-        const { tip, value, wins } = this.state;
-        const {
-          containerStyle,
-          imageContainer,
-          imageStyle,
-          inputContainerStyle,
-          inputStyle,
-          valueStyle,
-          waterStyle,
-          waterTopStyle,
-        } = styles.create();
+        const styles = createStyles(this);
         return (
-          <div style={containerStyle}>
-            <div style={imageContainer}>
-              {tipLeft ? (<img src={splash} alt="splash left" style={{
-                height: 75,
-                left: -45,
-                opacity: tip ? 0.6 : 0,
-                position: 'absolute',
-                top: -5,
-                transition: animations.transition,
-                width: 75,
-                zIndex: 6,
-              }} />) : (<img src={splash} alt="splash right" style={{
-                height: 75,
-                right: -30,
-                opacity: tip ? 0.6 : 0,
-                position: 'absolute',
-                top: -5,
-                transform: 'scaleX(-1)',
-                transition: animations.transition,
-                width: 75,
-                zIndex: 6,
-              }} />)}
-              <div style={{ opacity: wins ? 1 : 0, position: 'absolute', right: -4, top: -20, transition: animations.transition, zIndex: 10 }}>
-                <Check color={colors.results.check} style={{ height: 48, width: 48 }} />
+          <div style={styles.containerStyle}>
+            <div style={styles.imageContainer}>
+              <img src={splash} alt="splash" style={tipLeft ? styles.splashLeft : styles.splashRight} />
+              <div style={styles.checkContainer}>
+                <Check color={styles.checkColor} style={styles.check} />
               </div>
-              <div style={waterStyle}>
-                <div style={waterTopStyle} />
+              <div style={styles.waterStyle}>
+                <div style={styles.waterTopStyle} />
               </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'absolute',
-                width: '100%',
-                zIndex: 3,
-              }}>
-                <img src={bucket} alt="bucket" style={imageStyle} />
-                <div style={{
-                  backgroundColor: 'white',
-                  height: 100,
-                  marginTop: -5,
-                  width: '100%',
-                }} />
+              <div style={styles.bucketContainer}>
+                <img src={bucket} alt="bucket" style={styles.imageStyle} />
+                <div style={styles.bucketCover} />
               </div>
-              <div style={valueStyle}>
-                {value}
+              <div style={styles.valueStyle}>
+                {this.state.value}
               </div>
             </div>
-            <div style={inputContainerStyle}>
+            <div style={styles.inputContainerStyle}>
               <TextField
                 disabled={disabled}
                 floatingLabelText="Size"
                 onChange={handleSetSize}
                 onFocus={handleFocus}
-                style={inputStyle}
+                style={styles.inputStyle}
                 type="number"
                 value={size}
               />
@@ -185,23 +61,21 @@ class Bucket extends Component {
         );
       },
       tryShowValue: ({ value }) => {
-        if (value === this.state.value) return;
-        this.setState({ showValue: false }, () => {
-          setTimeout(() => this.setState({ showValue: true, value }), 200);
+        if (value !== this.state.value) this.setState({ showValue: false }, () => {
+          setTimeout(() => this.setState({ showValue: true, value }), delays.short);
         });
       },
       tryTip: ({ value }) => {
-        if (value >= this.props.value) return;
-        this.setState({ tip: true }, () => {
-          setTimeout(() => this.setState({ tip: false }), 600);
+        if (value < this.props.value) this.setState({ tip: true }, () => {
+          setTimeout(() => this.setState({ tip: false }), delays.long);
         });
       },
       tryWin: ({ wins = false }) => {
         if (!wins && this.state.wins) this.setState({ wins: false });
-        else if (wins && !this.state.wins) setTimeout(() => this.setState({ wins }), 600);
+        else if (wins && !this.state.wins) setTimeout(() => this.setState({ wins }), delays.long);
       },
     };
-  })(this.styles);
+  })();
 
   render() {
     return this.bucket.render();
