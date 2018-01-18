@@ -26,9 +26,10 @@ class Bucket extends Component {
         const { size, tipLeft, value } = this.props;
         const { showValue, tip } = this.state;
         const validSize = size > maxSize ? maxSize : (size < minSize ? minSize : size);
+        const heightAdjustment = size > maxSize ? (value / size) : (size < minSize ? (value * validSize) : 1);
         const valueForHeight = value > maxSize ? maxSize : value; // (value < minSize ? minSize : value);
         const length = 40 + (validSize * 30);
-        const height = (valueForHeight / validSize) * (length - 5);
+        const height = ((valueForHeight * heightAdjustment) / validSize) * (length - 5);
         const fontSize = (validSize * 6) + 5;
         return {
           containerStyle: {
