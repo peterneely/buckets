@@ -43,16 +43,17 @@ class Bucket extends Component {
             transition,
           },
           imageStyle: {
+            // border: '1px solid white',
             height: '100%',
-            position: 'absolute',
+            // position: 'absolute',
             width: '100%',
-            zIndex: 2,
+            // zIndex: 2,
           },
           inputContainerStyle: {
             backgroundColor: 'white',
             textAlign: 'center',
             width: length,
-            zIndex: 4,
+            zIndex: 5,
           },
           inputStyle: {
             fontSize: 18,
@@ -69,7 +70,7 @@ class Bucket extends Component {
             textAlign: 'center',
             transition,
             width: '90%',
-            zIndex: 3,
+            zIndex: 4,
           },
           waterStyle: {
             backgroundColor: water,
@@ -127,12 +128,26 @@ class Bucket extends Component {
                 top: -5,
                 transition: animations.transition,
                 width: 75,
-                zIndex: 5,
+                zIndex: 6,
               }} />
               <div style={waterStyle}>
                 <div style={waterTopStyle} />
               </div>
-              <img src={bucket} alt="bucket" style={imageStyle} />
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'absolute',
+                width: '100%',
+                zIndex: 3,
+              }}>
+                <img src={bucket} alt="bucket" style={imageStyle} />
+                <div style={{
+                  backgroundColor: 'white',
+                  height: 100,
+                  marginTop: -5,
+                  width: '100%',
+                }} />
+              </div>
               <div style={valueStyle}>
                 {value}
               </div>

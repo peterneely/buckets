@@ -70,7 +70,7 @@ class Game extends Component {
                 wins={rightWins}
               />
             </div>
-            <div style={{ ...rowStyle, marginBottom: 30 }}>
+            <div style={{ ...rowStyle, marginBottom: 30, zIndex: 10 }}>
               <PlayPause
                 actions={actions}
                 disabled={disabled}
