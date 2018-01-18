@@ -22,11 +22,12 @@ class Bucket extends Component {
     const maxSize = 6;
     return {
       create: () => {
-        const { size, value } = this.props;
+        const { size, tipLeft, value } = this.props;
         const { showValue, tip } = this.state;
         const validSize = size > maxSize ? maxSize : (size < minSize ? minSize : size);
+        const valueForHeight = value > maxSize ? maxSize : value; // (value < minSize ? minSize : value);
         const length = 40 + (validSize * 30);
-        const height = (value / validSize) * (length - 5);
+        const height = (valueForHeight / validSize) * (length - 5);
         const fontSize = (validSize * 6) + 5;
         return {
           containerStyle: {
@@ -39,7 +40,7 @@ class Bucket extends Component {
             height: length,
             width: length,
             position: 'relative',
-            transform: tip ? 'rotate(-25deg)' : 'none',
+            transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
             transition,
           },
           imageStyle: {
@@ -77,6 +78,7 @@ class Bucket extends Component {
             bottom: -2,
             height: height * 0.81,
             margin: '0 5px',
+            opacity: 0.5,
             position: 'absolute',
             transition: transitionSlow,
             width: '90%', // 115
@@ -86,6 +88,7 @@ class Bucket extends Component {
             backgroundColor: water,
             borderRadius: '50%',
             height: 40 + (height * 0.2),
+            // opacity: 0.5,
             position: 'absolute',
             top: -12 - (height * 0.04),
             width: '100%', // 115
@@ -105,7 +108,7 @@ class Bucket extends Component {
     };
     return {
       render: () => {
-        const { disabled, size } = this.props;
+        const { disabled, size, tipLeft } = this.props;
         const { tip, value } = this.state;
         const {
           containerStyle,
@@ -120,16 +123,26 @@ class Bucket extends Component {
         return (
           <div style={containerStyle}>
             <div style={imageContainer}>
-              <img src={splash} alt="splash" style={{
+              {tipLeft ? (<img src={splash} alt="splash left" style={{
                 height: 75,
                 left: -45,
-                opacity: tip ? 1 : 0,
+                opacity: tip ? 0.6 : 0,
                 position: 'absolute',
                 top: -5,
                 transition: animations.transition,
                 width: 75,
                 zIndex: 6,
-              }} />
+              }} />) : (<img src={splash} alt="splash right" style={{
+                height: 75,
+                right: -30,
+                opacity: tip ? 0.6 : 0,
+                position: 'absolute',
+                top: -5,
+                transform: 'scaleX(-1)',
+                transition: animations.transition,
+                width: 75,
+                zIndex: 6,
+              }} />)}
               <div style={waterStyle}>
                 <div style={waterTopStyle} />
               </div>
@@ -192,6 +205,7 @@ Bucket.propTypes = {
   id: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
   style: PropTypes.object,
+  tipLeft: PropTypes.bool,
   value: PropTypes.number.isRequired,
   wins: PropTypes.bool,
 };

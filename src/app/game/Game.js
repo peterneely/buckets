@@ -32,7 +32,7 @@ class Game extends Component {
       render: () => {
         const { game } = this.props;
         const {
-          buckets: { left, right },
+          buckets: { big, left, right, small },
           errorMessages,
           play,
           steps,
@@ -57,6 +57,7 @@ class Game extends Component {
                 id="left"
                 size={left.size}
                 style={elementContainerStyle}
+                tipLeft={small === 'left'}
                 value={left.value}
                 wins={leftWins}
               />
@@ -66,6 +67,7 @@ class Game extends Component {
                 id="right"
                 size={right.size}
                 style={elementContainerStyle}
+                tipLeft={big === 'right'}
                 value={right.value}
                 wins={rightWins}
               />
