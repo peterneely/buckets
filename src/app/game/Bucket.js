@@ -2,16 +2,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
+import Check from 'material-ui/svg-icons/action/check-circle';
 import bucket from '_images/bucket.png';
 import splash from '_images/splash.png';
 import { animations, colors } from '_app/muiTheme';
 
 class Bucket extends Component {
-  state = { showValue: false, tip: false, value: 0 };
+  state = { showValue: false, tip: false, value: 0, wins: false };
 
   componentWillReceiveProps(nextProps) {
-    const { tryShowValue, tryTip } = this.bucket;
-    [tryShowValue, tryTip].forEach(tryAction => tryAction(nextProps));
+    const { tryShowValue, tryTip, tryWin } = this.bucket;
+    [tryShowValue, tryTip, tryWin].forEach(tryAction => tryAction(nextProps));
   }
 
   styles = (() => {
@@ -109,7 +110,7 @@ class Bucket extends Component {
     return {
       render: () => {
         const { disabled, size, tipLeft } = this.props;
-        const { tip, value } = this.state;
+        const { tip, value, wins } = this.state;
         const {
           containerStyle,
           imageContainer,
@@ -143,6 +144,9 @@ class Bucket extends Component {
                 width: 75,
                 zIndex: 6,
               }} />)}
+              <div style={{ opacity: wins ? 1 : 0, position: 'absolute', right: -4, top: -20, transition: animations.transition, zIndex: 10 }}>
+                <Check color={colors.results.check} style={{ height: 48, width: 48 }} />
+              </div>
               <div style={waterStyle}>
                 <div style={waterTopStyle} />
               </div>
@@ -190,6 +194,10 @@ class Bucket extends Component {
         this.setState({ tip: true }, () => {
           setTimeout(() => this.setState({ tip: false }), 600);
         });
+      },
+      tryWin: ({ wins = false }) => {
+        if (!wins && this.state.wins) this.setState({ wins: false });
+        else if (wins && !this.state.wins) setTimeout(() => this.setState({ wins }), 600);
       },
     };
   })(this.styles);

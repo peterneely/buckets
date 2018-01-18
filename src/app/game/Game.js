@@ -59,7 +59,7 @@ class Game extends Component {
                 style={elementContainerStyle}
                 tipLeft={small === 'left'}
                 value={left.value}
-                wins={leftWins}
+                wins={leftWins && !!left.value}
               />
               <Bucket
                 actions={actions}
@@ -69,7 +69,7 @@ class Game extends Component {
                 style={elementContainerStyle}
                 tipLeft={big === 'right'}
                 value={right.value}
-                wins={rightWins}
+                wins={rightWins && !!right.value}
               />
             </div>
             <div style={{ ...rowStyle, marginBottom: 30, zIndex: 10 }}>

@@ -37,7 +37,7 @@ class Steps extends Component {
 
   styles = (() => {
     const { transition } = animations;
-    const { results: { backgroundColor } } = colors;
+    const { results: { headerBackgroundColor } } = colors;
     const { border, borderRadius } = elements;
     return {
       columnStyle: { fontSize: 16, textAlign: 'center' },
@@ -53,7 +53,7 @@ class Steps extends Component {
           width: 300,
         };
       },
-      headerStyle: { backgroundColor },
+      headerStyle: { backgroundColor: headerBackgroundColor },
       tableStyle: { borderRadius },
     };
   })();
