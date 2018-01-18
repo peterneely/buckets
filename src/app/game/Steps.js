@@ -37,10 +37,12 @@ class Steps extends Component {
 
   styles = (() => {
     const { transition } = animations;
-    const { results: { headerBackgroundColor } } = colors;
+    const { results: { countColor, headerBackgroundColor } } = colors;
     const { border, borderRadius } = elements;
+    const columnStyle = { fontSize: 16, textAlign: 'center' };
     return {
-      columnStyle: { fontSize: 16, textAlign: 'center' },
+      columnStyle,
+      countColumnStyle: { ...columnStyle, color: countColor },
       getContainerStyle: () => {
         const { play: { leftWins, rightWins, started } } = this.props;
         const show = started || leftWins || rightWins;
@@ -59,15 +61,16 @@ class Steps extends Component {
   })();
 
   steps = (styles => {
-    const { columnStyle, getContainerStyle, headerStyle, tableStyle } = styles;
+    const { columnStyle, countColumnStyle, getContainerStyle, headerStyle, tableStyle } = styles;
     return {
       render: () => {
         const { steps: { log = [] } } = this.props;
         return (
           <div style={getContainerStyle()}>
-            <Table fixedHeader height="230px" style={tableStyle}>
+            <Table fixedHeader height="230px" selectable={false} style={tableStyle}>
               <TableHeader adjustForCheckbox={false} displaySelectAll={false} style={headerStyle}>
                 <TableRow>
+                  <TableHeaderColumn style={columnStyle}>{'Count'}</TableHeaderColumn>
                   <TableHeaderColumn style={columnStyle}>{'Left'}</TableHeaderColumn>
                   <TableHeaderColumn style={columnStyle}>{'Right'}</TableHeaderColumn>
                 </TableRow>
@@ -75,6 +78,7 @@ class Steps extends Component {
               <TableBody displayRowCheckbox={false}>
                 {log.map((step, index) => (
                   <TableRow key={index}>
+                    <TableRowColumn style={countColumnStyle}>{index + 1}</TableRowColumn>
                     <TableRowColumn style={columnStyle}>{step.left}</TableRowColumn>
                     <TableRowColumn style={columnStyle}>{step.right}</TableRowColumn>
                   </TableRow>

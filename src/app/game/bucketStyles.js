@@ -1,7 +1,7 @@
 import { animations, colors } from '_app/muiTheme';
 
 const { transition, transitionSlow } = animations;
-const { bucket: { backgroundColor, water }, results: { check } } = colors;
+const { bucket: { backgroundColor, water }, results: { checkColor } } = colors;
 const minSize = 2;
 const maxSize = 6;
 
@@ -47,7 +47,7 @@ export default function createStyles({ props, state }) {
       height: 48,
       width: 48,
     },
-    checkColor: check,
+    checkColor,
     checkContainer: {
       opacity: wins ? 1 : 0,
       position: 'absolute',
