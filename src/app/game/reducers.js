@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import initialState from './initialState';
+import initialState, { restartStepsState } from './initialState';
 import * as types from './types';
 
 export default function reduce(state = initialState, action) {
@@ -19,7 +19,7 @@ export default function reduce(state = initialState, action) {
     case types.PAUSE_GAME:
       return { ...state, play: { ...state.play, paused: true } };
     case types.RESTART_GAME:
-      return { ...initialState };
+      return _.merge({}, state, restartStepsState);
     case types.RIGHT_WINS:
       return { ...state, play: { ...state.play, rightWins: true, started: false }, steps: { ...state.steps, current: '' } };
     case types.SET_BUCKET_SIZE:

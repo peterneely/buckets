@@ -1,5 +1,5 @@
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { grey100, grey300, lightBlue500, lightGreen50, lightGreen500, red50, red500 } from 'material-ui/styles/colors';
+import { grey100, grey300, lightBlue500, lightGreen500, red50, red500 } from 'material-ui/styles/colors';
 
 export const animations = {
   transition: 'all 0.3s ease',

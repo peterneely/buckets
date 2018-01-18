@@ -14,8 +14,8 @@ export default {
     started: false,
   },
   steps: {
-    log: [],
     current: '',
+    log: [],
     next: '',
   },
   target: 4,
@@ -32,5 +32,18 @@ export const startStepsState = {
   },
   steps: {
     log: [{ left: 0, right: 0 }],
+  },
+};
+
+export const restartStepsState = {
+  ...startStepsState,
+  play: {
+    paused: false,
+    started: false,
+  },
+  steps: {
+    current: '',
+    log: [],
+    next: '',
   },
 };

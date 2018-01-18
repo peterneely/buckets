@@ -67,8 +67,6 @@ export function startGame() {
   return { type: types.START_GAME };
 }
 
-// Steps:
-
 export function startSteps() {
   return (dispatch, getState) => {
     const { game: { buckets: { left, right } } } = getState();
@@ -99,9 +97,10 @@ export function transfer() {
 }
 
 function setNextStep(step) {
+  const timeout = step === 'fill' ? 1500 : 2000;
   return dispatch => {
     dispatch({ type: types.SET_NEXT_STEP, payload: step });
-    setTimeout(() => dispatch({ type: types.SET_CURRENT_STEP }), 2500);
+    setTimeout(() => dispatch({ type: types.SET_CURRENT_STEP }), timeout);
   };
 }
 

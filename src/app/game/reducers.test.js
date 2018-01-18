@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as types from './types';
 import reduce from './reducers';
-import initialState, { startStepsState } from './initialState';
+import { restartStepsState, startStepsState } from './initialState';
 
 describe('Game configuration', () => {
   it('Sets bucket size correctly', () => {
@@ -56,7 +56,7 @@ describe('Game play', () => {
 
   it('Restarts game correctly', () => {
     const action = { type: types.RESTART_GAME };
-    expect(reduce({}, action)).toEqual(initialState);
+    expect(reduce({}, action)).toEqual(restartStepsState);
   });
 });
 
