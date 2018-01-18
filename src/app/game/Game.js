@@ -56,7 +56,6 @@ class Game extends Component {
                 disabled={disableInput}
                 id="left"
                 size={left.size}
-                stop={leftWins || rightWins}
                 style={elementContainerStyle}
                 value={left.value}
                 wins={leftWins}
@@ -66,7 +65,6 @@ class Game extends Component {
                 disabled={disableInput}
                 id="right"
                 size={right.size}
-                stop={leftWins || rightWins}
                 style={elementContainerStyle}
                 value={right.value}
                 wins={rightWins}

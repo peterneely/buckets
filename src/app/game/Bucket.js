@@ -7,16 +7,11 @@ import splash from '_images/splash.png';
 import { animations, colors } from '_app/muiTheme';
 
 class Bucket extends Component {
-  state = { rotate: false };
+  state = { showValue: false, tip: false, value: 0 };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value < this.props.value && !this.state.rotate) this.setState({ rotate: true });
-    if (nextProps.value >= this.props.value && this.state.rotate) this.setState({ rotate: false });
-    if (nextProps.wins !== this.props.wins && this.state.rotate) this.setState({ rotate: false });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.stop && this.state.rotate) setTimeout(() => this.setState({ rotate: false }), 2000);
+    const { tryShowValue, tryTip } = this.bucket;
+    [tryShowValue, tryTip].forEach(tryAction => tryAction(nextProps));
   }
 
   styles = (() => {
@@ -28,6 +23,7 @@ class Bucket extends Component {
     return {
       create: () => {
         const { size, value } = this.props;
+        const { showValue, tip } = this.state;
         const validSize = size > maxSize ? maxSize : (size < minSize ? minSize : size);
         const length = 40 + (validSize * 30);
         const height = (value / validSize) * (length - 5);
@@ -43,7 +39,7 @@ class Bucket extends Component {
             height: length,
             width: length,
             position: 'relative',
-            transform: this.state.rotate ? 'rotate(-25deg)' : 'none',
+            transform: tip ? 'rotate(-25deg)' : 'none',
             transition,
           },
           imageStyle: {
@@ -68,8 +64,10 @@ class Bucket extends Component {
             fontSize,
             fontWeight: 'bold',
             marginBottom: (validSize * 3) - 2,
+            opacity: showValue ? 1 : 0,
             position: 'absolute',
             textAlign: 'center',
+            transition,
             width: '90%',
             zIndex: 3,
           },
@@ -77,6 +75,7 @@ class Bucket extends Component {
             backgroundColor: water,
             bottom: -2,
             height: height * 0.81,
+            margin: '0 5px',
             position: 'absolute',
             transition: transitionSlow,
             width: '90%', // 115
@@ -105,7 +104,8 @@ class Bucket extends Component {
     };
     return {
       render: () => {
-        const { disabled, size, value } = this.props;
+        const { disabled, size } = this.props;
+        const { tip, value } = this.state;
         const {
           containerStyle,
           imageContainer,
@@ -122,7 +122,7 @@ class Bucket extends Component {
               <img src={splash} alt="splash" style={{
                 height: 75,
                 left: -45,
-                opacity: this.state.rotate ? 1 : 0,
+                opacity: tip ? 1 : 0,
                 position: 'absolute',
                 top: -5,
                 transition: animations.transition,
@@ -151,6 +151,18 @@ class Bucket extends Component {
           </div>
         );
       },
+      tryShowValue: ({ value }) => {
+        if (value === this.state.value) return;
+        this.setState({ showValue: false }, () => {
+          setTimeout(() => this.setState({ showValue: true, value }), 200);
+        });
+      },
+      tryTip: ({ value }) => {
+        if (value >= this.props.value) return;
+        this.setState({ tip: true }, () => {
+          setTimeout(() => this.setState({ tip: false }), 600);
+        });
+      },
     };
   })(this.styles);
 
@@ -164,7 +176,6 @@ Bucket.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
-  stop: PropTypes.bool,
   style: PropTypes.object,
   value: PropTypes.number.isRequired,
   wins: PropTypes.bool,
