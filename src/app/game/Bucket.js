@@ -32,9 +32,7 @@ class Bucket extends Component {
           <div style={styles.containerStyle}>
             <div style={styles.imageContainer}>
               <img src={splash} alt="splash" style={tipLeft ? styles.splashLeft : styles.splashRight} />
-              <div style={styles.checkContainer}>
-                <Check color={styles.checkColor} style={styles.check} />
-              </div>
+              <Check color={styles.checkColor} style={styles.check} />
               <div style={styles.waterStyle}>
                 <div style={styles.waterTopStyle} />
               </div>
