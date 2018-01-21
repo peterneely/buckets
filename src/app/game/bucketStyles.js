@@ -6,10 +6,10 @@ const { bucket: { backgroundColor, waterColor }, results: { checkColor } } = col
 const maxSize = 6;
 const minSize = 3;
 const unitSizes = {
-  image: 31,
-  label: 6,
+  image: 38,
+  label: 8,
   labelMargin: 2,
-  water: 25,
+  water: 31,
   waterTop: 3,
 };
 
