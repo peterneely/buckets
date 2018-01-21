@@ -40,7 +40,7 @@ class Bucket extends Component {
                   <div style={styles.waterLevelTopStyle} />
                 </div>
               </div>
-              <div style={{ backgroundColor: 'white', height: 50, position: 'relative', width: '100%', zIndex: 20 }} />
+              <div style={styles.waterCoverStyle} />
             </div>
             <div style={styles.inputContainerStyle}>
               <TextField
