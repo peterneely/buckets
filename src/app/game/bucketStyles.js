@@ -14,7 +14,7 @@ const unitSizes = {
 export const calcWaterUnits = ({ size, value }) => size <= maxSize ? value : parseFloat(((maxSize / size) * value).toFixed(3));
 
 export default function createStyles({ props, state }) {
-  const { size, style = {}, tipLeft, value } = props;
+  const { isBig, size, style = {}, tipLeft, value } = props;
   const { showValue, tip, wins } = state;
   const bucketUnits = size > maxSize ? maxSize : size;
   const sizes = {
@@ -35,17 +35,28 @@ export default function createStyles({ props, state }) {
   };
   return {
     bucketContainer: {
+      alignItems: 'flex-start',
+      backgroundColor,
       display: 'flex',
       flexDirection: 'column',
-      position: 'absolute',
-      width: '100%',
-      zIndex: 3,
+      height: sizes.image,
+      position: 'relative',
+      // transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
+      // transition: transitionSlow,
+      width: sizes.image,
+      // alignItems: 'flex-start',
+      // display: 'flex',
+      // flexDirection: 'column',
+      // height: sizes.image + 100,
+      // position: 'absolute',
+      // width: '100%',
+      // zIndex: 3,
     },
-    bucketCover: {
-      backgroundColor: 'white',
-      height: 100,
-      width: '100%',
-    },
+    // bucketCover: {
+    //   backgroundColor: 'white',
+    //   height: 100,
+    //   width: '100%',
+    // },
     check: {
       height: 48,
       width: 48,
@@ -62,20 +73,25 @@ export default function createStyles({ props, state }) {
       flexDirection: 'column',
       ...style,
     },
-    imageContainer: {
-      backgroundColor,
-      height: sizes.image,
-      position: 'relative',
-      transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
-      transition: transitionSlow,
-      width: sizes.image,
-    },
+    // imageContainer: {
+    //   // alignItems: 'flex-start',
+    //   // backgroundColor: 'white',
+    //   // display: 'flex',
+    //   // flexDirection: 'column',
+    //   // height: sizes.image + 100,
+    //   // position: 'relative',
+    //   transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
+    //   transition: transitionSlow,
+    //   width: sizes.image,
+    // },
     imageStyle: {
-      height: '100%',
-      width: '100%',
+      height: sizes.image,
+      width: sizes.image,
+      zIndex: 2,
     },
     inputContainerStyle: {
       backgroundColor: 'white',
+      position: 'relative',
       textAlign: 'center',
       width: sizes.image,
       zIndex: 5,
@@ -93,6 +109,11 @@ export default function createStyles({ props, state }) {
       right: -30,
       transform: 'scaleX(-1)',
     },
+    tipContainer: {
+      transform: tip ? `rotate(${tipLeft ? -25 : 25}deg)` : 'none',
+      transition: transitionSlow,
+      zIndex: isBig ? 2 : 1,
+    },
     valueStyle: {
       bottom: 10,
       color: 'white',
@@ -103,28 +124,37 @@ export default function createStyles({ props, state }) {
       position: 'absolute',
       textAlign: 'center',
       transition,
-      width: '90%',
+      width: sizes.image,
       zIndex: 4,
     },
-    waterStyle: {
+    // waterContainerStyle: {
+    //   height: sizes.waterLevel + sizes.waterTopLevel,
+    //   position: 'absolute',
+    //   bottom: 0,
+    //   width: '100%',
+    // },
+    waterLevelStyle: {
       backgroundColor: water,
-      bottom: -10,
+      bottom: 0,
       height: sizes.waterLevel,
-      margin: '0 5px',
+      // margin: '0 5px',
       opacity: 0.5,
       position: 'absolute',
       transition: transitionSlow,
-      width: '90%',
+      width: sizes.image,
       zIndex: 1,
     },
-    waterTopStyle: {
-      backgroundColor: water,
+    waterLevelTopStyle: {
+      backgroundColor: 'blue',
       borderRadius: '50%',
       height: sizes.waterTopLevel,
       position: 'absolute',
       top: -12, // - (sizes.waterLevel * 0.04),
-      width: '100%',
+      width: sizes.image,
       zIndex: 2,
     },
+    // waterStyle: {
+    //   position: 'relative',
+    // },
   };
 }

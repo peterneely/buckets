@@ -59,6 +59,7 @@ class Game extends Component {
                 actions={actions}
                 disabled={disableInput}
                 id="left"
+                isBig={big === 'left'}
                 size={left.size}
                 style={elementContainerStyle}
                 tipLeft={small === 'left'}
@@ -69,6 +70,7 @@ class Game extends Component {
                 actions={actions}
                 disabled={disableInput}
                 id="right"
+                isBig={big === 'right'}
                 size={right.size}
                 style={elementContainerStyle}
                 tipLeft={big === 'right'}

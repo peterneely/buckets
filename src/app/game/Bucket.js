@@ -30,19 +30,17 @@ class Bucket extends Component {
         const styles = createStyles(this);
         return (
           <div style={styles.containerStyle}>
-            <div style={styles.imageContainer}>
-              <img src={splash} alt="splash" style={tipLeft ? styles.splashLeft : styles.splashRight} />
-              <Check color={styles.checkColor} style={styles.check} />
-              <div style={styles.waterStyle}>
-                <div style={styles.waterTopStyle} />
-              </div>
+            <div style={styles.tipContainer}>
               <div style={styles.bucketContainer}>
+                <img src={splash} alt="splash" style={tipLeft ? styles.splashLeft : styles.splashRight} />
+                <Check color={styles.checkColor} style={styles.check} />
                 <img src={bucket} alt="bucket" style={styles.imageStyle} />
-                <div style={styles.bucketCover} />
+                <div style={styles.valueStyle}>{this.state.value}</div>
+                <div style={styles.waterLevelStyle}>
+                  <div style={styles.waterLevelTopStyle} />
+                </div>
               </div>
-              <div style={styles.valueStyle}>
-                {this.state.value}
-              </div>
+              <div style={{ backgroundColor: 'white', height: 50, position: 'relative', width: '100%', zIndex: 20 }} />
             </div>
             <div style={styles.inputContainerStyle}>
               <TextField
@@ -84,6 +82,7 @@ Bucket.propTypes = {
   actions: PropTypes.object.isRequired,
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
+  isBig: PropTypes.bool,
   size: PropTypes.number.isRequired,
   style: PropTypes.object,
   tipLeft: PropTypes.bool,
