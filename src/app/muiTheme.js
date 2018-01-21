@@ -10,7 +10,7 @@ export const animations = {
 export const colors = {
   bucket: {
     backgroundColor: grey300,
-    water: lightBlue500,
+    waterColor: lightBlue500,
   },
   errors: {
     backgroundColor: red50,

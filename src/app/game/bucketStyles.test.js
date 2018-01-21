@@ -7,11 +7,8 @@ const test = scenarios => {
 };
 
 describe('calcWaterUnits', () => {
-  it('Should return the same units as the bucket size when buckets are size 6 and below', () => {
+  it('Should return the same units as the bucket size when buckets are size 3 and above and 6 and below', () => {
     test([
-      { size: 1, value: 1, expected: 1 },
-      { size: 2, value: 1, expected: 1 },
-      { size: 2, value: 2, expected: 2 },
       { size: 3, value: 1, expected: 1 },
       { size: 3, value: 2, expected: 2 },
       { size: 3, value: 3, expected: 3 },
@@ -30,6 +27,14 @@ describe('calcWaterUnits', () => {
       { size: 6, value: 4, expected: 4 },
       { size: 6, value: 5, expected: 5 },
       { size: 6, value: 6, expected: 6 },
+    ]);
+  });
+
+  it('Should limit the water units to size 3 when buckets are size 2 and below', () => {
+    test([
+      { size: 1, value: 1, expected: 3 },
+      { size: 2, value: 1, expected: 1.5 },
+      { size: 2, value: 2, expected: 3 },
     ]);
   });
 

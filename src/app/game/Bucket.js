@@ -10,7 +10,11 @@ import createStyles from './bucketStyles';
 const delays = { short: 200, long: 600 };
 
 class Bucket extends Component {
-  state = { showValue: false, tip: false, value: 0, wins: false };
+  state = { showValue: false, tip: false, value: null, wins: false };
+
+  componentWillMount() {
+    this.bucket.tryShowValue(this.props);
+  }
 
   componentWillReceiveProps(nextProps) {
     const { tryShowValue, tryTip, tryWin } = this.bucket;
@@ -35,7 +39,7 @@ class Bucket extends Component {
                 <img src={splash} alt="splash" style={tipLeft ? styles.splashLeft : styles.splashRight} />
                 <Check color={styles.checkColor} style={styles.check} />
                 <img src={bucket} alt="bucket" style={styles.imageStyle} />
-                <div style={styles.valueStyle}>{this.state.value}</div>
+                <div style={styles.labelStyle}>{this.state.value}</div>
                 <div style={styles.waterLevelStyle}>
                   <div style={styles.waterLevelTopStyle} />
                 </div>

@@ -1,4 +1,4 @@
-import { toInt, penultimate } from './format';
+import { toDecimalPlaces, toInt, penultimate } from './format';
 
 describe('penultimate', () => {
   it('Should return the second to last item in an array or string of two or more items', () => {
@@ -32,6 +32,20 @@ describe('penultimate', () => {
     expect(penultimate(123)).toBeNull();
     expect(penultimate(() => { })).toBeNull();
     expect(penultimate({})).toBeNull();
+  });
+});
+
+describe('toDecimalPlaces', () => {
+  it('Should return the correct number of decimals from a given number', () => {
+    expect(toDecimalPlaces(3, 0.12345)).toEqual(0.123);
+    expect(toDecimalPlaces(3, 1.12345)).toEqual(1.123);
+    expect(toDecimalPlaces(3, 6.54321)).toEqual(6.543);
+  });
+
+  it('Should return the correct number of decimals from a given string number', () => {
+    expect(toDecimalPlaces(3, '0.12345')).toEqual(0.123);
+    expect(toDecimalPlaces(3, '1.12345')).toEqual(1.123);
+    expect(toDecimalPlaces(3, '6.54321')).toEqual(6.543);
   });
 });
 

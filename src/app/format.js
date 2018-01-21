@@ -6,6 +6,10 @@ export function penultimate(array) {
   return array[index];
 }
 
+export function toDecimalPlaces(decimalPlaces, value) {
+  return parseFloat(parseFloat(value).toFixed(decimalPlaces));
+}
+
 export function toInt(value) {
   return value >>> 0;
 }
