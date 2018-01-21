@@ -23,15 +23,16 @@ export default function createStyles({ props, state }) {
   const { isBig, size, style = {}, tipLeft, value } = props;
   const { showValue, tip, wins } = state;
   const bucketUnits = size > maxSize ? maxSize : (size < minSize ? minSize : size);
-  const heightAdjustment = bucketUnits === minSize ? 1 : 1 + ((bucketUnits - minSize) * 0.5);
-  const waterHeightAdjustment = bucketUnits === minSize ? 1 : ((bucketUnits - minSize) * 3);
+  const unitsAboveMin = bucketUnits - minSize;
+  const heightAdjustment = 1 + (unitsAboveMin * 0.35);
+  const baseWaterHeight = (calcWaterUnits({ size, value }) * unitSizes.water);
   const calculated = {
     checkTop: -50 / heightAdjustment,
     imageHeight: bucketUnits * unitSizes.image,
     labelBottomMargin: bucketUnits * unitSizes.labelMargin * heightAdjustment,
     labelFontSize: bucketUnits * unitSizes.label,
     splashTop: -24 / heightAdjustment,
-    waterHeight: (calcWaterUnits({ size, value }) * unitSizes.water) + waterHeightAdjustment,
+    waterHeight: baseWaterHeight ? baseWaterHeight + (unitsAboveMin * 3) : 0,
     waterTopHeight: 40 + (bucketUnits * unitSizes.waterTop * heightAdjustment),
   };
   const splash = {
