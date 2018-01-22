@@ -27,7 +27,7 @@ export default function createStyles({ props, state }) {
   const heightAdjustment = 1 + (unitsAboveMin * 0.35);
   const baseWaterHeight = (calcWaterUnits({ size, value }) * unitSizes.water);
   const calculated = {
-    checkTop: -50 / heightAdjustment,
+    checkTop: -34 / heightAdjustment,
     imageHeight: bucketUnits * unitSizes.image,
     labelBottomMargin: bucketUnits * unitSizes.labelMargin * heightAdjustment,
     labelFontSize: bucketUnits * unitSizes.label,
